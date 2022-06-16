@@ -1,0 +1,2 @@
+#DELETE ALL VOLUME
+docker volume rm $(docker volume ls -q) -f
