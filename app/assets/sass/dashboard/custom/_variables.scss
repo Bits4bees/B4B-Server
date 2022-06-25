@@ -137,6 +137,7 @@ $nav-gray:                   #444444 !default;
 $search-gray:                #b7b7b7 !default;
 $calendar-gray:              #9499a7 !default;
 $active-blue:                #00bbff !default;
+$title-brown:                #400e11 !default;
 
 
 
@@ -294,8 +295,8 @@ $spacers: map-merge((
   'xl': ($spacer * 8)
 ), $spacers);
 
-$padding-base-vertical:        .5rem !default;
-$padding-base-horizontal:      .7rem !default;
+$padding-base-vertical:        1.5rem !default;
+$padding-base-horizontal:      2.5rem !default;
 
 $padding-btn-vertical:         11px !default;
 $padding-btn-horizontal:       40px !default;
@@ -897,6 +898,7 @@ $card-inner-border-radius:          calc(#{$card-border-radius} - #{$card-border
 $card-cap-bg:                       $gray-100 !default;
 $card-bg:                           $white !default;
 $card-black-background:             #27293d !default;
+$card-yellow-background:             #d79d3a !default;
 $card-img-overlay-padding:          1.25rem !default;
 
 //$card-group-margin:                 ($grid-gutter-width / 2);

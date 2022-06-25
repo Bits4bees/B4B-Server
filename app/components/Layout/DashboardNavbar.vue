@@ -16,11 +16,11 @@
           <span class="navbar-toggler-bar bar3"></span>
         </button>
       </div>
-      <a class="navbar-brand ml-xl-3 ml-5" href="#pablo">{{ routeName }}</a>
+      <!-- <a class="navbar-brand ml-xl-3 ml-5" href="#pablo">{{ routeName }}</a> -->
     </div>
 
     <ul class="navbar-nav" :class="$rtl.isRTL ? 'mr-auto' : 'ml-auto'">
-      <el-select
+      <!-- <el-select
         class="select-success"
         placeholder="Select Device"
         @change="selectDevice()"
@@ -33,7 +33,7 @@
           :key="device._id"
         >
         </el-option>
-      </el-select>
+      </el-select> -->
 
       <base-dropdown
         tag="li"

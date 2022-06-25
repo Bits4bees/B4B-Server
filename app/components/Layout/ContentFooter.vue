@@ -4,12 +4,12 @@
       <ul class="nav">
         <li class="nav-item">
           <a
-            href="https://www.parso.co/"
+            href="https://www.bits4bees.co/"
             target="_blank"
             rel="noopener"
             class="nav-link"
           >
-            www.parso.co/
+            www.bits4bees.co/
           </a>
         </li>
         <li class="nav-item">
@@ -24,7 +24,7 @@
         </li>
         <li class="nav-item">
           <a
-            href="https://www.parso.co/blog"
+            href="https://www.bits4bees.co/blog"
             target="_blank"
             rel="noopener"
             class="nav-link"
@@ -37,7 +37,7 @@
         &copy; {{ year }}, made with <i class="tim-icons icon-heart-2"></i>
         
         <!-- <a
-          href="https://www.parso.co/"
+          href="https://www.bits4bees.co/"
           target="_blank"
           rel="noopener"
           >IoTicos</a

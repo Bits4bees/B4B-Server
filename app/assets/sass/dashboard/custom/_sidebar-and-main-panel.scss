@@ -32,6 +32,7 @@
     margin-top: 82px;
     margin-left: 20px;
     border-radius: 5px;
+    border-radius: 100px;
 
     .sidebar-wrapper{
         width: $full-width;
@@ -41,6 +42,8 @@
         position: relative;
         overflow-y: auto;
         overflow-x: hidden;
+        background-color: #d79d3a;
+        border-radius: 100px;
 
         .dropdown .dropdown-backdrop{
           display: none !important;
@@ -52,6 +55,15 @@
 
         > .nav,
         .user .info{
+          padding-left: 30px;
+
+          .a {
+            .p
+            {
+              font-size: 25px;
+            } 
+          }
+
           [data-toggle="collapse"] ~ div > ul > li > a{
               span{
                 display: inline-block;
@@ -128,6 +140,12 @@
                 font-size: $font-size-xs;
                 padding: 10px 8px;
                 line-height: $line-height-lg;
+
+                p{
+                  color: #400e11;
+                  font-size: 20px;
+                  font-weight: 600;
+                }
             }
 
             &:first-child > a{
@@ -306,7 +324,7 @@
         .simple-text{
             text-transform: uppercase;
             padding: $padding-base-vertical 0;
-            display: block;
+            display: contents;
             white-space: nowrap;
             font-size: $font-size-base;
             color: $white;
@@ -369,8 +387,8 @@
         }
 
         .photo{
-            width: 34px;
-            height: 34px;
+            width: 45px;
+            height: 45px;
             overflow: hidden;
             float: left;
             z-index: 5;
@@ -439,7 +457,7 @@
     width: $full-width;
     min-height: 100vh;
     border-top: 2px solid $primary;
-    background: linear-gradient($background-black, $background-states-black);
+    background: wheat;
 
     @include transitions (0.50s, cubic-bezier(0.685, 0.0473, 0.346, 1));
 
@@ -458,6 +476,8 @@
     }
 
     > .content {
+        background: rgb(249,249,213);
+        background: radial-gradient(circle, rgba(249,249,213,1) 0%, rgba(239,210,95,1) 33%, rgba(249,249,213,1) 100%);
         padding: 80px 30px 30px 280px;
         min-height: calc(100vh - 70px);
     }

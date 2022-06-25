@@ -2,10 +2,10 @@
   <div class="sidebar" :data="backgroundColor">
     <div class="sidebar-wrapper" ref="sidebarScrollArea">
       <div class="logo">
-        <a href="https://www.parso.co/" class="simple-text logo-mini">
+        <a href="https://www.bits4bees.co/" class="simple-text logo-mini">
           <img src="parso-logo.png" alt="app-logo" />
         </a>
-        <a href="https://www.parso.co/" class="simple-text logo-normal">
+        <a href="https://www.bits4bees.co/" class="simple-text logo-normal">
           {{ title }}
         </a>
       </div>
