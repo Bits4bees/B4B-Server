@@ -14,7 +14,7 @@
         </li>
         <li class="nav-item">
           <a
-            href="https://www.facebook.com/CorporateExperience"
+            href="https://www.bits4bees.co/about-us"
             target="_blank"
             rel="noopener"
             class="nav-link"

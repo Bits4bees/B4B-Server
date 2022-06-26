@@ -52,7 +52,7 @@ MONGO_USERNAME=devuser
 MONGO_PASSWORD=devpassword
 MONGO_HOST=mongo
 MONGO_PORT=27017
-MONGO_DATABASE=ioticos_god_level
+MONGO_DATABASE=bits4bees_database
 
 #emqx
 EMQX_DEFAULT_APPLICATION_SECRET=emqxsecret

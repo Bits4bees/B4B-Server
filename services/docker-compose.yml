@@ -43,7 +43,7 @@ services:
       - mongo
 
     extra_hosts:
-      - "localhost:192.168.214.213"
+      - "localhost:${LOCALHOST}"
 
     environment:
       EMQX_NAME: parso_broker

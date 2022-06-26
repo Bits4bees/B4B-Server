@@ -324,7 +324,7 @@ sudo sh -c "echo 'MONGO_USERNAME=${MONGO_USERNAME}' >> $filename"
 sudo sh -c "echo 'MONGO_PASSWORD=${MONGO_PASSWORD}' >> $filename"
 sudo sh -c "echo 'MONGO_HOST=mongo' >> $filename"
 sudo sh -c "echo 'MONGO_PORT=${MONGO_PORT}' >> $filename"
-sudo sh -c "echo 'MONGO_DATABASE=ioticos_god_level' >> $filename"
+sudo sh -c "echo 'MONGO_DATABASE=bits4bees_database' >> $filename"
 sudo sh -c "echo '' >> $filename"
 
 
