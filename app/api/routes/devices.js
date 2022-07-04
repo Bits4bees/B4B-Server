@@ -323,6 +323,10 @@ async function createSaverRule(userId, dId, status) {
     //save rule in emqx - grabamos la regla en emqx
     const res = await axios.post(url, newRule, auth);
 
+    console.log("AUTH RAW: "+ auth);
+    console.log("SQL RAW: "+ rawsql);
+    console.log("EMQX NEW RULE: "+ newRule.actions);
+    console.log("EMQX RESPONSE: "+ res.status +" "+ res.data.data);
 
     if (res.status === 200 && res.data.data) {
       await SaverRule.create({
