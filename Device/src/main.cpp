@@ -1,14 +1,12 @@
 
 #include <Arduino.h>
+#include "DHT.h"
 #include "Colors.h"
 #include "IoTicosSplitter.h"
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <PubSubClient.h>
-
-// LED TEST
-// #define LED LED_BUILTIN
 
 // IoT Device
 String dId = "2222";
@@ -18,6 +16,9 @@ const char *mqtt_server = "192.168.100.150";
 
 //PINS
 #define led LED_BUILTIN
+#define DHTPIN 13     // Digital pin connected to the DHT sensor
+#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
+#define DHTPENABLE 12     // Digital pin connected to the DHT GND sensor
 
 // WiFi
 const char *wifi_ssid = "Psarocolius";
@@ -38,6 +39,7 @@ void clear();
 // Global Vars
 WiFiClient espclient;
 PubSubClient client(espclient);
+DHT dht(DHTPIN, DHTTYPE);
 IoTicosSplitter splitter;
 long lastReconnectAttemp = 0;
 long varsLastSend[20];
@@ -45,10 +47,9 @@ long varsLastRead[20];
 String last_received_msg = "";
 String last_received_topic = "";
 
-long prev_temp_in  = 37;
-long prev_hum_in   = random(40, 60);
-long prev_temp_out = random(20, 40);
-long prev_hum_out  = random(80, 100);
+
+float prev_temp_in  = 37;
+float prev_hum_in   = random(40, 60);
 
 
 DynamicJsonDocument mqtt_data_doc(2048);
@@ -60,6 +61,7 @@ void setup() {
   Serial.begin(115200);
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(led, OUTPUT);
+  delay(100);
 
   clear();
 
@@ -111,7 +113,6 @@ void setup() {
 int count = 0;
 void loop() {
   check_mqtt_connection();
-                     // wait for a second
 }
 
 //USER FUNTIONS ⤵
@@ -122,54 +123,68 @@ void process_sensors()
 // ##########TEMPERATURA INTERNA##################v
   if (now - varsLastRead[0] >= 5 * 1000) //Read the sensor each 5 seconds
   {
+
     varsLastRead[0] = millis();
 
-    long temp_in = prev_temp_in + random(0, 2) - random(0, 2);
-    mqtt_data_doc["variables"][0]["last"]["value"] = temp_in;
-
-    //save temp?
-    long dif = temp_in - prev_temp_in;
-    if (dif < 0)
-    {
-      dif *= -1;
-    }
-
-    if (dif >= 1)
-    {
-      mqtt_data_doc["variables"][0]["last"]["save"] = 1;
-    }
-    else
-    {
+    float temp_in = dht.readTemperature();
+    if (isnan(temp_in)){
       mqtt_data_doc["variables"][0]["last"]["save"] = 0;
     }
-    prev_temp_in = temp_in;
+    else{
+      //save temp?
+      float dif = temp_in - prev_temp_in;
+      if (dif < 0)
+      {
+        dif *= -1;
+      }
+
+      if (dif >= 0.01)
+      {
+        mqtt_data_doc["variables"][0]["last"]["save"] = 1;
+      }
+      else
+      {
+        mqtt_data_doc["variables"][0]["last"]["save"] = 0;
+      }
+    
+      mqtt_data_doc["variables"][0]["last"]["value"] = temp_in;
+      prev_temp_in = temp_in;
+    }
   }
 
 // ##########HUMEDAD INTERNA##################
   if (now - varsLastRead[1] >= 5 * 1000) //Read the sensor each 5 seconds
   {
+    digitalWrite(led, HIGH);
+    digitalWrite(DHTPENABLE, LOW);
+    delay(100);
+
     varsLastRead[1] = millis();
-  //int hum_in = random(40, 50);
-    long hum_in = prev_hum_in +  + random(0, 2) - random(0, 2);
-    mqtt_data_doc["variables"][1]["last"]["value"] = hum_in;
+    float hum_in = dht.readHumidity();
 
-    //save hum?
-    long dif = hum_in - prev_hum_in;
-    if (dif < 0)
-    {
-      dif *= -1;
-    }
-
-    if (dif >= 1)
-    {
-      mqtt_data_doc["variables"][1]["last"]["save"] = 1;
-    }
-    else
-    {
+    if (isnan(hum_in)){
       mqtt_data_doc["variables"][1]["last"]["save"] = 0;
     }
+    else{
+      //save hum?
+      float dif = hum_in - prev_hum_in;
+      if (dif < 0)
+      {
+        dif *= -1;
+      }
 
-    prev_hum_in = hum_in;
+      if (dif >= 0.01)
+      {
+        mqtt_data_doc["variables"][1]["last"]["save"] = 1;
+      }
+      else
+      {
+        mqtt_data_doc["variables"][1]["last"]["save"] = 0;
+      }
+    
+      mqtt_data_doc["variables"][1]["last"]["value"] = hum_in;
+      prev_hum_in = hum_in;
+    }
   }
 }
 
