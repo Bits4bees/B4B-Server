@@ -1,31 +1,18 @@
 <template>
-
-
     <card type="chart">
-
         <template slot="header">
-
-
-            <h5 class="card-category pull-right">{{getTimeAgo((nowTime - time) / 1000)}} ago </h5>
-
-          
+            <h5 class="card-category pull-right">{{getTimeAgo((nowTime - time) / 1000)}} ago </h5>       
             <h5 class="card-category">{{ config.selectedDevice.name }} - {{ config.variableFullName }}</h5>
-
             <h3 class="card-title">
                 <i class="fa " :class="[config.icon, getIconColorClass()]" aria-hidden="true"
                     style="font-size: 30px;"></i>
                 <span>{{value.toFixed(config.decimalPlaces)}} {{config.unit}}</span>
             </h3>
-
         </template>
-
         <div class="chart-area" style="height: 300px">
             <highchart style="height: 100%" v-if="isMounted" :options="chartOptions"/>
         </div>
-
     </card>
-
-
 </template>
 
 

@@ -732,16 +732,16 @@ export default {
       ncConfig: {
         userId: "sampleuserid",
         selectedDevice: {
-          name: "Home",
-          dId: "8888"
+          name: "Site",
+          dId: "00000"
         },
-        variableFullName: "temperature",
+        variableFullName: "Temperature",
         variable: "varname",
         variableType: "input",
         variableSendFreq: "30",
-        unit: "Watts",
+        unit: "°C",
         class: "success",
-        column: "col-12",
+        column: "col-6",
         decimalPlaces: 2,
         widget: "numberchart",
         icon: "fa-sun",
