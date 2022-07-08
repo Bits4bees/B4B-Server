@@ -10,7 +10,10 @@
       :class="[widget.column]"
       
     >
-
+      <colmenachart
+        v-if="widget.widget == 'colmenachart'"
+        :config="fixWidget(widget)"
+      ></colmenachart>
       <Rtnumberchart
         v-if="widget.widget == 'numberchart'"
         :config="fixWidget(widget)"

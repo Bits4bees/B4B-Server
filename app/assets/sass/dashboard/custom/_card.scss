@@ -219,3 +219,15 @@
 .card-body{
   padding: $card-spacer-y;
 }
+
+.colmena-text {
+  text-align: center;
+
+  h3, h2, h1{
+    color: $title-brown;
+  }
+}
+
+.colmena-value {
+  font-weight: 600;
+}

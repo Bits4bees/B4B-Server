@@ -18,6 +18,12 @@
               style="width: 100%;"
             >
               <el-option
+                  class="text-dark"
+                  value="colmenachart"
+                  label="Colmena"
+                >
+              </el-option>
+              <el-option
                 class="text-dark"
                 value="numberchart"
                 label="Number Chart INPUT <-"
@@ -124,6 +130,78 @@
 
               <el-select
                 v-model="ncConfig.column"
+                class="select-success"
+                placeholder="Select Column Width"
+                style="width: 100%;"
+              >
+                <el-option
+                  class="text-dark"
+                  value="col-3"
+                  label="col-3"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-4"
+                  label="col-4"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-5"
+                  label="col-5"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-6"
+                  label="col-6"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-7"
+                  label="col-7"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-8"
+                  label="col-8"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-9"
+                  label="col-9"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-10"
+                  label="col-10"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-11"
+                  label="col-11"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-12"
+                  label="col-12"
+                ></el-option>
+              </el-select>
+
+              <br /><br />
+            </div>
+
+            <!-- FORMS COLMENA TYPE -->
+            <div v-if="widgetType == 'colmenachart'">
+              <base-input
+                v-model="colmenaConfig.variableFullName"
+                label="Nombre de la colmena"
+                type="text"
+              >
+              </base-input>
+
+              <br></br>
+
+              <el-select
+                v-model="iotIndicatorConfig.column"
                 class="select-success"
                 placeholder="Select Column Width"
                 style="width: 100%;"
@@ -533,9 +611,13 @@
 
           <!-- WIDGET PREVIEW -->
           <div class="col-6">
+            <colmenachart
+              v-if="widgetType == 'colmenachart'"
+              :config="colmenaConfig"
+            ></colmenachart>
             <Rtnumberchart
               v-if="widgetType == 'numberchart'"
-              :config="ncConfig"
+              :config="colmenaConfig"
             ></Rtnumberchart>
             <Iotswitch
               v-if="widgetType == 'switch'"
@@ -582,7 +664,10 @@
           @click="deleteWidget(index)"
           style="margin-bottom: 10px;"
         ></i>
-
+        <colmenachart
+          v-if="widget.widget == 'colmenachart'"
+          :config="widget"
+        ></colmenachart>
         <Rtnumberchart
           v-if="widget.widget == 'numberchart'"
           :config="widget"
@@ -727,6 +812,26 @@ export default {
       widgetType: "",
       templateName: "",
       templateDescription: "",
+
+      colmenaConfig: {
+        userId: "sampleuserid",
+        selectedDevice: {
+          name: "Home",
+          dId: "8888"
+        },
+        variableFullName: "nombre",
+        variable: "varname",
+        variableType: "input",
+        variableSendFreq: "30",
+        unit: "Watts",
+        class: "success",
+        column: "col-12",
+        decimalPlaces: 2,
+        widget: "colmenachart",
+        icon: "fa-sun",
+        chartTimeAgo: 60,
+        demo: true
+      },
 
 
       ncConfig: {
@@ -931,6 +1036,11 @@ export default {
 
     //Add Widget
     addNewWidget() {
+      if (this.widgetType == "colmenachart") {
+        this.colmenaConfig.variable = this.makeid(10);
+        this.widgets.push(JSON.parse(JSON.stringify(this.colmenaConfig)));
+      }
+
       if (this.widgetType == "numberchart") {
         this.ncConfig.variable = this.makeid(10);
         this.widgets.push(JSON.parse(JSON.stringify(this.ncConfig)));
