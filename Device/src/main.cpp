@@ -126,7 +126,10 @@ void process_sensors()
 
     varsLastRead[0] = millis();
 
-    float temp_in = dht.readTemperature();
+    // SIMULATOR
+    long temp_in = prev_temp_in + random(0, 2) - random(0, 2);
+    // READ SENSOR
+    // float temp_in = dht.readTemperature();
     if (isnan(temp_in)){
       mqtt_data_doc["variables"][0]["last"]["save"] = 0;
     }
@@ -160,7 +163,9 @@ void process_sensors()
     delay(100);
 
     varsLastRead[1] = millis();
-    float hum_in = dht.readHumidity();
+
+    float hum_in = prev_hum_in +  + random(0, 2) - random(0, 2);
+    // float hum_in = dht.readHumidity();
 
     if (isnan(hum_in)){
       mqtt_data_doc["variables"][1]["last"]["save"] = 0;

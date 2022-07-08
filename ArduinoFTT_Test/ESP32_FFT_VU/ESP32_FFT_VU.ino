@@ -48,7 +48,15 @@ void loop() {
   FFT.ComplexToMagnitude();
   FFT.MajorPeak();
 
-  Serial.println(FFT.MajorPeak());
+  for (int i = 0; i < SAMPLES; i++) {
+    Serial.println("[" + String(i) + "," + String(int(vReal[i])) + "],");
+//    Serial.println(int(vReal[i])); 
+  }
+  Serial.println("*********************"); 
+//  delay(1000);
+  while (true){}
+
+//  Serial.println(FFT.MajorPeak());
 
 //  for (int i = 0; i<NUM_BANDS; i++){
 //    bandValues[i] = 0;
