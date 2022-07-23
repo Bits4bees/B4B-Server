@@ -48,13 +48,20 @@ void loop() {
   FFT.ComplexToMagnitude();
   FFT.MajorPeak();
 
+//  for (int i = 0; i < SAMPLES; i++) {
+//    Serial.println("[" + String(i) + "," + String(int(vReal[i])) + "],");
+////    Serial.println(int(vReal[i])); 
+//  }
+//  Serial.println("*********************"); 
+////  delay(1000);
+//  while (true){}
+
   for (int i = 0; i < SAMPLES; i++) {
-    Serial.println("[" + String(i) + "," + String(int(vReal[i])) + "],");
-//    Serial.println(int(vReal[i])); 
+    Serial.println(vReal[i]); 
   }
   Serial.println("*********************"); 
-//  delay(1000);
-  while (true){}
+  delay(1000);
+
 
 //  Serial.println(FFT.MajorPeak());
 
