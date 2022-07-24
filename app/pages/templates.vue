@@ -31,6 +31,12 @@
               </el-option>
               <el-option
                 class="text-dark"
+                value="fttchart"
+                label="FTT Chart INPUT <-"
+              >
+              </el-option>
+              <el-option
+                class="text-dark"
                 value="indicator"
                 label="Boolean Indicator INPUT <-"
               >
@@ -201,7 +207,140 @@
               <br></br>
 
               <el-select
-                v-model="iotIndicatorConfig.column"
+                v-model="colmenaConfig.column"
+                class="select-success"
+                placeholder="Select Column Width"
+                style="width: 100%;"
+              >
+                <el-option
+                  class="text-dark"
+                  value="col-3"
+                  label="col-3"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-4"
+                  label="col-4"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-5"
+                  label="col-5"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-6"
+                  label="col-6"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-7"
+                  label="col-7"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-8"
+                  label="col-8"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-9"
+                  label="col-9"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-10"
+                  label="col-10"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-11"
+                  label="col-11"
+                ></el-option>
+                <el-option
+                  class="text-dark"
+                  value="col-12"
+                  label="col-12"
+                ></el-option>
+              </el-select>
+
+              <br /><br />
+            </div>
+
+            <div v-if="widgetType == 'fttchart'">
+              <base-input
+                v-model="fttcConfig.variableFullName"
+                label="Var Name"
+                type="text"
+              >
+              </base-input>
+
+              <base-input v-model="fttcConfig.unit" label="Unit" type="text">
+              </base-input>
+
+              <base-input
+                v-model.number="fttcConfig.decimalPlaces"
+                label="Decimal Places"
+                type="number"
+              >
+              </base-input>
+
+              <base-input
+                v-model="fttcConfig.icon"
+                label="Icon"
+                type="text"
+              ></base-input>
+
+              <br />
+
+              <base-input
+                v-model.number="fttcConfig.variableSendFreq"
+                label="Send Freq"
+                type="number"
+              ></base-input>
+
+              <br />
+
+              <base-input
+                v-model.number="fttcConfig.chartTimeAgo"
+                label="Chart Back Time (mins)"
+                type="number"
+              ></base-input>
+
+              <br />
+
+              <el-select
+                v-model="fttcConfig.class"
+                class="select-success"
+                placeholder="Select Class"
+                style="width: 100%;"
+              >
+                <el-option
+                  class="text-success"
+                  value="success"
+                  label="Success"
+                ></el-option>
+                <el-option
+                  class="text-primary"
+                  value="primary"
+                  label="Primary"
+                ></el-option>
+                <el-option
+                  class="text-warning"
+                  value="warning"
+                  label="Warning"
+                ></el-option>
+                <el-option
+                  class="text-danger"
+                  value="danger"
+                  label="Danger"
+                ></el-option>
+              </el-select>
+
+              <br /><br /><br />
+
+              <el-select
+                v-model="fttcConfig.column"
                 class="select-success"
                 placeholder="Select Column Width"
                 style="width: 100%;"
@@ -619,6 +758,12 @@
               v-if="widgetType == 'numberchart'"
               :config="colmenaConfig"
             ></Rtnumberchart>
+            
+            <Rtfttchart
+              v-if="widgetType == 'fttchart'"
+              :config="fttcConfig"
+            ></Rtfttchart>
+
             <Iotswitch
               v-if="widgetType == 'switch'"
               :config="iotSwitchConfig"
@@ -672,6 +817,11 @@
           v-if="widget.widget == 'numberchart'"
           :config="widget"
         ></Rtnumberchart>
+        
+        <Rtfttchart
+          v-if="widget.widget == 'fttchart'"
+          :config="widget"
+        ></Rtfttchart>
 
         <Iotswitch
           v-if="widget.widget == 'switch'"
@@ -825,7 +975,7 @@ export default {
         variableSendFreq: "30",
         unit: "Watts",
         class: "success",
-        column: "col-12",
+        column: "col-6",
         decimalPlaces: 2,
         widget: "colmenachart",
         icon: "fa-sun",
@@ -837,18 +987,38 @@ export default {
       ncConfig: {
         userId: "sampleuserid",
         selectedDevice: {
-          name: "Home",
-          dId: "8888"
+          name: "Site",
+          dId: "00000"
         },
-        variableFullName: "temperature",
+        variableFullName: "Temperature",
         variable: "varname",
         variableType: "input",
         variableSendFreq: "30",
-        unit: "Watts",
+        unit: "°C",
         class: "success",
-        column: "col-12",
+        column: "col-6",
         decimalPlaces: 2,
         widget: "numberchart",
+        icon: "fa-sun",
+        chartTimeAgo: 60,
+        demo: true
+      },
+
+      fttcConfig: {
+        userId: "sampleuserid",
+        selectedDevice: {
+          name: "Site",
+          dId: "00000"
+        },
+        variableFullName: "Sound",
+        variable: "varname",
+        variableType: "input",
+        variableSendFreq: "30",
+        unit: "dB",
+        class: "success",
+        column: "col-6",
+        decimalPlaces: 2,
+        widget: "fttchart",
         icon: "fa-sun",
         chartTimeAgo: 60,
         demo: true
@@ -1044,6 +1214,11 @@ export default {
       if (this.widgetType == "numberchart") {
         this.ncConfig.variable = this.makeid(10);
         this.widgets.push(JSON.parse(JSON.stringify(this.ncConfig)));
+      }
+
+      if (this.widgetType == "fttchart") {
+        this.fttcConfig.variable = this.makeid(10);
+        this.widgets.push(JSON.parse(JSON.stringify(this.fttcConfig)));
       }
 
       if (this.widgetType == "switch") {

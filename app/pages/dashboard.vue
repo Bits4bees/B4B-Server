@@ -19,6 +19,11 @@
         :config="fixWidget(widget)"
       ></Rtnumberchart>
 
+      <Rtfttchart
+        v-if="widget.widget == 'numberchart'"
+        :config="fixWidget(widget)"
+      ></Rtfttchart>
+
       <Iotswitch
         v-if="widget.widget == 'switch'"
         :config="fixWidget(widget)"

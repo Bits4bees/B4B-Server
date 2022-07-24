@@ -21,17 +21,38 @@
 
         <div class="chart-area colmena-text" style="height: 550px">
             <!--<highchart style="height: 100%" v-if="isMounted" :options="chartOptions"/>-->
-            <h3>Temperatura exterior</h3>
-            <h1 class="colmena-value">23.2 C</h1>
-            <h3>Temperatura interior</h3>
-            <h1 class="colmena-value">37.2 C</h1>
-            <h3>Humedad exterior</h3>
-            <h1 class="colmena-value">51%</h1>
-            <h3>Humedad interior</h3>
-            <h1 class="colmena-value">49%</h1>
-            <h2>Actividad: Alta</h2>
-        </div>
 
+            <div class="row">
+                <div class="col-lg-6">
+                    <h3>Temperatura exterior</h3>
+                    <h1 class="colmena-value">23.2 C</h1>
+                </div>
+
+                <div class="col-lg-6">
+                    <h3>Temperatura interior</h3>
+                    <h1 class="colmena-value">37.2 C</h1>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6">
+                    <h3>Humedad exterior</h3>
+                    <h1 class="colmena-value">51%</h1>
+                </div>
+
+                <div class="col-lg-6">
+                    <h3>Humedad interior</h3>
+                    <h1 class="colmena-value">49%</h1>
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-lg-6 offset-3">
+                    <h2>Actividad: Alta</h2>
+                </div>
+            </div>
+        </div>
     </card>
 
 
