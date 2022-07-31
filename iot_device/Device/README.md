@@ -22,3 +22,12 @@ Helping by the PlatformIO Menu, compile and upload the firmware
 
 Press the Serial Monitor to see the Device Stats
 
+
+Ejecutar proyecto
+
+- Borrar docker containers
+- Borrar docker volumes:
+ docker volume rm $(docker volume ls -q) -f   (puede no funcionar, usar tool de docker en vs code)
+- Borrar carpeta mongodata en carpeta /services:  sudo rm -rf services/mongodata/
+- Borrar imagenes de docker: docker rmi -f iddeimagen
+
