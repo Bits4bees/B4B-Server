@@ -9,10 +9,10 @@
 #include <PubSubClient.h>
 
 // IoT Device
-String dId = "2222";
-String webhook_pass = "UtvB8nGiZo";
-String webhook_endpoint = "http://192.168.100.150:3001/api/getdevicecredentials";
-const char *mqtt_server = "192.168.100.150";
+String dId = "123456";
+String webhook_pass = "tK8qXCCzdW";
+String webhook_endpoint = "http://192.168.100.7:3001/api/getdevicecredentials";
+const char *mqtt_server = "192.168.100.7";
 
 //PINS
 #define led LED_BUILTIN
@@ -21,8 +21,8 @@ const char *mqtt_server = "192.168.100.150";
 #define DHTPENABLE 12     // Digital pin connected to the DHT GND sensor
 
 // WiFi
-const char *wifi_ssid = "Psarocolius";
-const char *wifi_password = "Oropendola2021";
+const char *wifi_ssid = "Jasson";
+const char *wifi_password = "telerin1234";
 
 //Functions definitions
 bool get_mqtt_credentials();

@@ -6,9 +6,9 @@
         <template slot="header">
 
 
-            <h5 class="card-category pull-right">{{getTimeAgo((nowTime - time) / 1000)}} ago </h5>
+            <h5 class="card-category pull-right">{{ getTimeAgo((nowTime - time) / 1000) }} ago </h5>
 
-          
+
             <h5 class="card-category">{{ config.selectedDevice.name }} - {{ config.variableFullName }}</h5>
 
             <h3 class="card-title">
@@ -25,7 +25,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <h3>Temperatura exterior</h3>
-                    <h1 class="colmena-value">23.2 C</h1>
+                    <h1 class="colmena-value">{{ value.toFixed(config.decimalPlaces) }}</h1>
                 </div>
 
                 <div class="col-lg-6">
@@ -33,7 +33,7 @@
                     <h1 class="colmena-value">37.2 C</h1>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-lg-6">
                     <h3>Humedad exterior</h3>
@@ -52,6 +52,11 @@
                     <h2>Actividad: Alta</h2>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-6 offset-3">
+                    <button class="btn-success" @click="verDetalles()">Ver detalles</button>
+                </div>
+            </div>
         </div>
     </card>
 
@@ -60,257 +65,269 @@
 
 
 <script>
-    export default {
-        name: 'colmenachart',
-        props: ['config'],
-        data() {
-            return {
-                receivedTime: 0,
-                value: 0,
-                time: Date.now(),
-                nowTime: Date.now(),
-                isMounted: false,
-                topic: "",
+export default {
+    name: 'colmenachart',
+    props: ['config'],
+    data() {
+        return {
+            receivedTime: 0,
+            value: 0,
+            time: Date.now(),
+            nowTime: Date.now(),
+            isMounted: false,
+            topic: "",
 
-                chartOptions: {
-                    credits: {
-                        enabled: false
-                    },
-                    chart: {
-                        renderTo: 'container',
-                        defaultSeriesType: 'line',
-                        backgroundColor: 'rgba(0,0,0,0)',
-                    },
+            chartOptions: {
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    renderTo: 'container',
+                    defaultSeriesType: 'line',
+                    backgroundColor: 'rgba(0,0,0,0)',
+                },
+                title: {
+                    text: ''
+                },
+                xAxis: {
+                    type: 'datetime',
+                    labels: {
+                        style: {
+                            color: '#d4d2d2'
+                        }
+                    }
+                },
+                yAxis: {
                     title: {
                         text: ''
                     },
-                    xAxis: {
-                        type: 'datetime',
-                        labels: {
-                            style: {
-                                color: '#d4d2d2'
-                            }
+                    labels: {
+                        style: {
+                            color: '#d4d2d2',
+                            font: '11px Trebuchet MS, Verdana, sans-serif'
                         }
-                    },
-                    yAxis: {
-                        title: {
-                            text: ''
-                        },
-                        labels: {
-                            style: {
-                                color: '#d4d2d2',
-                                font: '11px Trebuchet MS, Verdana, sans-serif'
-                            }
-                        }
-                    },
-
-                    plotOptions: {
-                        series: {
-                            label: {
-                                connectorAllowed: false,
-                            },
-                            pointStart: 2010
-                        }
-                    },
-                    series: [{
-                        name: '',
-                        data: [],
-                        color: "#e14eca"
-                    },],
-                    legend: {
-                        itemStyle: {
-                            color: '#d4d2d2'
-                        }
-                    },
-                    responsive: {
-                        rules: [{
-                            condition: {
-                                maxWidth: 500
-                            },
-                            chartOptions: {
-                                legend: {
-                                    layout: 'horizontal',
-                                    align: 'center',
-                                    verticalAlign: 'bottom'
-                                }
-                            }
-                        }]
                     }
                 },
 
-            };
-        },
-        watch:  {
-            config: {
-                immediate: true,
-                deep: true,
-                handler() {
-                    setTimeout(() => {
-                        this.value = 0;
-
-                        this.$nuxt.$off(this.topic + "/sdata");
-
-                        this.topic = this.config.userId + '/' + this.config.selectedDevice.dId + '/' + this.config.variable;
-                        this.$nuxt.$on(this.topic + "/sdata", this.procesReceivedData);
-
-                        this.chartOptions.series[0].data = [];
-
-                        this.getChartData();
-                
-                        window.dispatchEvent(new Event('resize'));
-                    }, 300);
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false,
+                        },
+                        pointStart: 2010
+                    }
+                },
+                series: [{
+                    name: '',
+                    data: [],
+                    color: "#e14eca"
+                },],
+                legend: {
+                    itemStyle: {
+                        color: '#d4d2d2'
+                    }
+                },
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
                 }
-            }
-        },
-        mounted() {
-
-            this.getNow();
-            //this.updateColorClass();
-
-        },
-        beforeDestroy() {
-            this.$nuxt.$off(this.topic + "/sdata");
-        },
-        methods: {
-
-            updateColorClass() {
-                console.log("update" + this.config.class)
-
-                var c = this.config.class;
-
-                if (c == "success") {
-                    this.chartOptions.series[0].color = "#00f2c3";
-                }
-                if (c == "primary") {
-                    this.chartOptions.series[0].color = "#e14eca";
-                }
-                if (c == "warning") {
-                    this.chartOptions.series[0].color = "#ff8d72";
-                }
-                if (c == "danger") {
-                    this.chartOptions.series[0].color = "#fd5d93";
-                }
-
-                this.chartOptions.series[0].name = this.config.variableFullName + " " + this.config.unit;
-
             },
 
-            getChartData() {
+        };
+    },
+    watch: {
+        config: {
+            immediate: true,
+            deep: true,
+            handler() {
+                setTimeout(() => {
+                    this.value = 0;
 
-                if (this.config.demo) {
-                    this.chartOptions.series[0].data = [[1606659071668, 22], [1606659072668, 27], [1606659073668, 32], [1606659074668, 7]];
-                    this.isMounted = true;
-                    return;
-                }
+                    this.$nuxt.$off(this.topic + "/sdata");
 
- 
-                const axiosHeaders = {
-                    headers: {
-                        token: $nuxt.$store.state.auth.token,
-                    },
-                    params: { dId: this.config.selectedDevice.dId, variable: this.config.variable, chartTimeAgo: this.config.chartTimeAgo }
-                }
+                    this.topic = this.config.userId + '/' + this.config.selectedDevice.dId + '/' + this.config.variable;
+                    this.$nuxt.$on(this.topic + "/sdata", this.procesReceivedData);
 
-                this.$axios.get("/get-small-charts-data", axiosHeaders)
-                    .then(res => {
-                        
-                        this.chartOptions.series[0].data = [];
-                        const data = res.data.data;
-                        console.log(res.data)
+                    this.chartOptions.series[0].data = [];
 
-                        data.forEach(element => {
-                            var aux = []
+                    this.getChartData();
 
-                            aux.push(element.time + (new Date().getTimezoneOffset() * 60 * 1000 * -1));
-                            aux.push(element.value);
+                    window.dispatchEvent(new Event('resize'));
+                }, 300);
+            }
+        }
+    },
+    mounted() {
 
-                            this.chartOptions.series[0].data.push(aux);
-                        });
+        this.getNow();
+        //this.updateColorClass();
 
-                        this.isMounted = true;
+    },
+    beforeDestroy() {
+        this.$nuxt.$off(this.topic + "/sdata");
+    },
+    methods: {
+
+        updateColorClass() {
+            console.log("update" + this.config.class)
+
+            var c = this.config.class;
+
+            if (c == "success") {
+                this.chartOptions.series[0].color = "#00f2c3";
+            }
+            if (c == "primary") {
+                this.chartOptions.series[0].color = "#e14eca";
+            }
+            if (c == "warning") {
+                this.chartOptions.series[0].color = "#ff8d72";
+            }
+            if (c == "danger") {
+                this.chartOptions.series[0].color = "#fd5d93";
+            }
+
+            this.chartOptions.series[0].name = this.config.variableFullName + " " + this.config.unit;
+
+        },
+
+        getChartData() {
+
+            if (this.config.demo) {
+                this.chartOptions.series[0].data = [[1606659071668, 22], [1606659072668, 27], [1606659073668, 32], [1606659074668, 7]];
+                this.isMounted = true;
+                return;
+            }
 
 
-                        return;
+            const axiosHeaders = {
+                headers: {
+                    token: $nuxt.$store.state.auth.token,
+                },
+                params: { dId: this.config.selectedDevice.dId, variable: this.config.variable, chartTimeAgo: this.config.chartTimeAgo }
+            }
 
-                    })
-                    .catch(e => {
+            this.$axios.get("/get-small-charts-data", axiosHeaders)
+                .then(res => {
 
-                        console.log(e)
-                        return;
+                    this.chartOptions.series[0].data = [];
+                    const data = res.data.data;
+                    console.log(res.data)
 
+                    data.forEach(element => {
+                        var aux = []
+
+                        aux.push(element.time + (new Date().getTimezoneOffset() * 60 * 1000 * -1));
+                        aux.push(element.value);
+
+                        this.chartOptions.series[0].data.push(aux);
                     });
 
-            },
+                    this.isMounted = true;
 
-            getIconColorClass() {
 
-                if (this.config.class == "success") {
-                    return "text-success";
-                }
-                if (this.config.class == "primary") {
-                    return "text-primary";
-                }
-                if (this.config.class == "warning") {
-                    return "text-warning";
-                }
-                if (this.config.class == "danger") {
-                    return "text-danger";
-                }
-            },
+                    return;
 
-            procesReceivedData(data) {
+                })
+                .catch(e => {
 
-                try {
-                    this.time = Date.now();
-                    this.value = data.value;
+                    console.log(e)
+                    return;
 
-                    setTimeout(() => {
-                        if(data.save==1){
-                            this.getChartData();
-                        }  
-                    }, 1000);
-                } catch (error) {
-                    console.log(error);
-                }
+                });
 
-               
-            },
+        },
 
-            getNow() {
-                this.nowTime = Date.now();
+        getIconColorClass() {
+
+            if (this.config.class == "success") {
+                return "text-success";
+            }
+            if (this.config.class == "primary") {
+                return "text-primary";
+            }
+            if (this.config.class == "warning") {
+                return "text-warning";
+            }
+            if (this.config.class == "danger") {
+                return "text-danger";
+            }
+        },
+
+        procesReceivedData(data) {
+
+            try {
+                this.time = Date.now();
+                this.value = data.value;
+
                 setTimeout(() => {
-                    this.getNow();
+                    if (data.save == 1) {
+                        this.getChartData();
+                    }
                 }, 1000);
-            },
-
-            getTimeAgo(seconds) {
-
-                if (seconds < 0) {
-                    seconds = 0;
-                }
-
-                if (seconds < 59) {
-                    return seconds.toFixed() + " secs";
-                }
-
-                if (seconds > 59 && seconds <= 3600) {
-                    seconds = seconds / 60;
-                    return seconds.toFixed() + " min";
-                }
-
-                if (seconds > 3600 && seconds <= 86400) {
-                    seconds = seconds / 3600;
-                    return seconds.toFixed() + " hour";
-                }
-
-                if (seconds > 86400) {
-                    seconds = seconds / 86400;
-                    return seconds.toFixed() + " day";
-                }
+            } catch (error) {
+                console.log(error);
+            }
 
 
-            },
+        },
+
+        getNow() {
+            this.nowTime = Date.now();
+            setTimeout(() => {
+                this.getNow();
+            }, 1000);
+        },
+
+        getTimeAgo(seconds) {
+
+            if (seconds < 0) {
+                seconds = 0;
+            }
+
+            if (seconds < 59) {
+                return seconds.toFixed() + " secs";
+            }
+
+            if (seconds > 59 && seconds <= 3600) {
+                seconds = seconds / 60;
+                return seconds.toFixed() + " min";
+            }
+
+            if (seconds > 3600 && seconds <= 86400) {
+                seconds = seconds / 3600;
+                return seconds.toFixed() + " hour";
+            }
+
+            if (seconds > 86400) {
+                seconds = seconds / 86400;
+                return seconds.toFixed() + " day";
+            }
+
+
+        },
+
+        verDetalles(event) {
+            console.log("THIS !!! ", this.config.selectedDevice.dId);
+            this.$store.state.selectedDevice.dId = this.config.selectedDevice.dId;
+            this.$store.state.selectedDevice.name = this.config.selectedDevice.name;
+            this.$router.push('details');
+            if (event) {
+                alert(event.target.tagName)
+                
+            }
         }
-    };
+    }
+};
 </script>
-<style></style>
+<style>
+</style>
