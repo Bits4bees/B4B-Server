@@ -1,12 +1,17 @@
 
 #include <Arduino.h>
-#include "DHT.h"
 #include "Colors.h"
 #include "IoTicosSplitter.h"
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <PubSubClient.h>
+// ***********************
+#include "B4B_HDC1080.h"
+#include "B4B_FFT.h"
+#include <driver/i2s.h>
+#include <Wire.h>
+// ***********************
 
 // IoT Device
 String dId = "2222";
@@ -16,9 +21,26 @@ const char *mqtt_server = "192.168.100.150";
 
 //PINS
 #define led 10
-#define DHTPIN 13     // Digital pin connected to the DHT sensor
-#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
-#define DHTPENABLE 12     // Digital pin connected to the DHT GND sensor
+// ***************
+#define I2S_WS 15        
+#define I2S_SD 13
+#define I2S_SCK 2
+
+#define ADD1 0x40
+#define SDA1 23
+#define SCL1 22
+
+#define ADD2 0x40
+#define SDA2 33
+#define SCL2 32
+// ***************
+
+// CONSTANTES
+#define SAMPLES         1024          // Must be a power of 2
+#define SAMPLING_FREQ   44100         // Hz, must be 40000 or less due to ADC conversion time. Determines maximum frequency that can be analysed by the FFT Fmax=sampleF/2.
+
+#define I2S_PORT I2S_NUM_0
+#define bufferLen 1024
 
 // WiFi
 const char *wifi_ssid = "Psarocolius";
@@ -36,23 +58,39 @@ void process_incoming_msg(String topic, String incoming);
 void print_stats();
 void clear();
 
+// *******************
+void i2s_install();
+void i2s_setpin();
+// *******************
+
 // Global Vars
 WiFiClient espclient;
 PubSubClient client(espclient);
-DHT dht(DHTPIN, DHTTYPE);
 IoTicosSplitter splitter;
 long lastReconnectAttemp = 0;
+long lastStats = 0;
 long varsLastSend[20];
 long varsLastRead[20];
 String last_received_msg = "";
 String last_received_topic = "";
 
-
-float prev_temp_in  = 37;
-float prev_hum_in   = random(40, 60);
-
-
 DynamicJsonDocument mqtt_data_doc(2048);
+
+// ********************
+double vReal[SAMPLES];
+double vImag[SAMPLES];
+
+B4B_FFT FFT = B4B_FFT(vReal, vImag, SAMPLES, SAMPLING_FREQ);
+int16_t sBuffer[bufferLen];
+
+B4B_HDC1080 HDC_INT;
+B4B_HDC1080 HDC_EXT;
+
+TwoWire I2C_INT = TwoWire(0); //I2C1 bus
+TwoWire I2C_EXT = TwoWire(1); //I2C2 bus
+// ********************
+// float prev_temp_in  = 37;
+// float prev_hum_in   = random(40, 60);
 
 
 // the setup function runs once when you press reset or power the board
@@ -62,6 +100,26 @@ void setup() {
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(led, OUTPUT);
   delay(100);
+
+  // *************************************************************************************
+  i2s_install();
+  i2s_install();
+  i2s_install();
+  i2s_setpin();
+  i2s_start(I2S_PORT);
+  delay(500);
+
+  I2C_INT.begin(SDA1, SCL1); // Start I2C1 on pins 23 and 22
+  I2C_EXT.begin(SDA2, SCL2); // Start I2C2 on pins 33 and 32
+  delay(500);
+
+  HDC_INT.begin(ADD1, &I2C_INT);
+  HDC_EXT.begin(ADD2, &I2C_EXT);
+
+  HDC_INT.setResolution(HDC1080_RESOLUTION_14BIT, HDC1080_RESOLUTION_14BIT);
+  HDC_EXT.setResolution(HDC1080_RESOLUTION_14BIT, HDC1080_RESOLUTION_14BIT);
+  delay(1000);
+  // *************************************************************************************
 
   clear();
 
@@ -121,76 +179,76 @@ void process_sensors()
   long now = millis();
 
 // ##########TEMPERATURA INTERNA##################v
-  if (now - varsLastRead[0] >= 5 * 1000) //Read the sensor each 5 seconds
-  {
+//   if (now - varsLastRead[0] >= 5 * 1000) //Read the sensor each 5 seconds
+//   {
 
-    varsLastRead[0] = millis();
+//     varsLastRead[0] = millis();
 
-    // SIMULATOR
-    long temp_in = prev_temp_in + random(0, 2) - random(0, 2);
-    // READ SENSOR
-    // float temp_in = dht.readTemperature();
-    if (isnan(temp_in)){
-      mqtt_data_doc["variables"][0]["last"]["save"] = 0;
-    }
-    else{
-      //save temp?
-      float dif = temp_in - prev_temp_in;
-      if (dif < 0)
-      {
-        dif *= -1;
-      }
+//     // SIMULATOR
+//     long temp_in = prev_temp_in + random(0, 2) - random(0, 2);
+//     // READ SENSOR
+//     // float temp_in = dht.readTemperature();
+//     if (isnan(temp_in)){
+//       mqtt_data_doc["variables"][0]["last"]["save"] = 0;
+//     }
+//     else{
+//       //save temp?
+//       float dif = temp_in - prev_temp_in;
+//       if (dif < 0)
+//       {
+//         dif *= -1;
+//       }
 
-      if (dif >= 0.01)
-      {
-        mqtt_data_doc["variables"][0]["last"]["save"] = 1;
-      }
-      else
-      {
-        mqtt_data_doc["variables"][0]["last"]["save"] = 0;
-      }
+//       if (dif >= 0.01)
+//       {
+//         mqtt_data_doc["variables"][0]["last"]["save"] = 1;
+//       }
+//       else
+//       {
+//         mqtt_data_doc["variables"][0]["last"]["save"] = 0;
+//       }
     
-      mqtt_data_doc["variables"][0]["last"]["value"] = temp_in;
-      prev_temp_in = temp_in;
-    }
-  }
+//       mqtt_data_doc["variables"][0]["last"]["value"] = temp_in;
+//       prev_temp_in = temp_in;
+//     }
+//   }
 
-// ##########HUMEDAD INTERNA##################
-  if (now - varsLastRead[1] >= 5 * 1000) //Read the sensor each 5 seconds
-  {
-    digitalWrite(led, HIGH);
-    digitalWrite(DHTPENABLE, LOW);
-    delay(100);
+// // ##########HUMEDAD INTERNA##################
+//   if (now - varsLastRead[1] >= 5 * 1000) //Read the sensor each 5 seconds
+//   {
+//     digitalWrite(led, HIGH);
+//     digitalWrite(DHTPENABLE, LOW);
+//     delay(100);
 
-    varsLastRead[1] = millis();
+//     varsLastRead[1] = millis();
 
-    float hum_in = prev_hum_in +  + random(0, 2) - random(0, 2);
-    // float hum_in = dht.readHumidity();
+//     float hum_in = prev_hum_in +  + random(0, 2) - random(0, 2);
+//     // float hum_in = dht.readHumidity();
 
-    if (isnan(hum_in)){
-      mqtt_data_doc["variables"][1]["last"]["save"] = 0;
-    }
-    else{
-      //save hum?
-      float dif = hum_in - prev_hum_in;
-      if (dif < 0)
-      {
-        dif *= -1;
-      }
+//     if (isnan(hum_in)){
+//       mqtt_data_doc["variables"][1]["last"]["save"] = 0;
+//     }
+//     else{
+//       //save hum?
+//       float dif = hum_in - prev_hum_in;
+//       if (dif < 0)
+//       {
+//         dif *= -1;
+//       }
 
-      if (dif >= 0.01)
-      {
-        mqtt_data_doc["variables"][1]["last"]["save"] = 1;
-      }
-      else
-      {
-        mqtt_data_doc["variables"][1]["last"]["save"] = 0;
-      }
+//       if (dif >= 0.01)
+//       {
+//         mqtt_data_doc["variables"][1]["last"]["save"] = 1;
+//       }
+//       else
+//       {
+//         mqtt_data_doc["variables"][1]["last"]["save"] = 0;
+//       }
     
-      mqtt_data_doc["variables"][1]["last"]["value"] = hum_in;
-      prev_hum_in = hum_in;
-    }
-  }
+//       mqtt_data_doc["variables"][1]["last"]["value"] = hum_in;
+//       prev_hum_in = hum_in;
+//     }
+//   }
 }
 
 
@@ -420,8 +478,6 @@ void clear()
   Serial.print("[H"); // cursor to home command
 }
 
-long lastStats = 0;
-
 void print_stats()
 {
   long now = millis();
@@ -458,3 +514,33 @@ void print_stats()
   }
 }
 
+// ************************************************************
+void i2s_install()
+{
+  const i2s_config_t i2s_config = {
+    .mode = i2s_mode_t(I2S_MODE_MASTER | I2S_MODE_RX),
+    .sample_rate = 44100,
+    .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
+    .channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
+    // .communication_format = i2s_comm_format_t(I2S_COMM_FORMAT_I2S | I2S_COMM_FORMAT_I2S_MSB),
+    .intr_alloc_flags = 0, // default interrupt priority
+    .dma_buf_count = 8,
+    .dma_buf_len = bufferLen,
+    .use_apll = false
+  };
+
+  i2s_driver_install(I2S_PORT, &i2s_config, 0, NULL);
+}
+
+void i2s_setpin()
+{
+  const i2s_pin_config_t pin_config = {
+    .bck_io_num = I2S_SCK,
+    .ws_io_num = I2S_WS,
+    .data_out_num = -1,
+    .data_in_num = I2S_SD
+  };
+
+  i2s_set_pin(I2S_PORT, &pin_config);
+}
+// ************************************************************
