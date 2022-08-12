@@ -1,19 +1,24 @@
 
+//####ArduinoFTT##
+#include <arduinoFFT.h>
 
+#define SAMPLES         1024          // Must be a power of 2
+#define SAMPLING_FREQ   44100         // Hz, must be 40000 or less due to ADC conversion time. Determines maximum frequency that can be analysed by the FFT Fmax=sampleF/2.
+
+double vReal[SAMPLES];
+double vImag[SAMPLES];
+
+arduinoFFT FFT = arduinoFFT(vReal, vImag, SAMPLES, SAMPLING_FREQ);
+
+//####INMP411#####
 #include <driver/i2s.h>
-#include<cmath>
-#include <driver/dac.h>
-
-
 
 #define I2S_WS 15        
 #define I2S_SD 13
 #define I2S_SCK 2
-
 #define I2S_PORT I2S_NUM_0
-
-//// Define input buffer length
 #define bufferLen 1024
+
 int16_t sBuffer[bufferLen];
 
 void setup() {
@@ -22,29 +27,38 @@ void setup() {
 
   delay(1000);
   i2s_install();
+  i2s_install();
+  i2s_install();
   i2s_setpin();
   i2s_start(I2S_PORT);
   delay(500);
 }
 void loop() {
- 
   // Get I2S data and place in data buffer
   size_t bytesIn = 0;
-  esp_err_t result = i2s_read(I2S_PORT, &sBuffer, bufferLen, &bytesIn, portMAX_DELAY);
+  esp_err_t result = i2s_read(I2S_PORT, &sBuffer, bufferLen, &bytesIn, portMAX_DELAY); 
 
-  if (result == ESP_OK)
-  {
-    if (bytesIn > 0){ 
-      for (int16_t i = 0; i < int16_t(bytesIn-256); ++i) {
-        Serial.println(sBuffer[i]);
-        }
-      }
+  if ((result == ESP_OK) & (bytesIn > 0) ){
+    for (int i = 0; i < SAMPLES; ++i) {
+          vReal[i] = double(sBuffer[i]);
+          vImag[i] = 0;  
+     }
   }
 
-  delay(1000);
+  // Compute FFT
+  FFT.DCRemoval();
+  FFT.Windowing(FFT_WIN_TYP_HAMMING, FFT_FORWARD);
+  FFT.Compute(FFT_FORWARD);
+  FFT.ComplexToMagnitude();
+  FFT.MajorPeak();
+
+  for (int i = 0; i < SAMPLES/2; i++) {
+    Serial.println(vReal[i]); 
+  }
+  
+  delay(2000);
 }
-//I2S_CHANNEL_FMT_ONLY_LEFT
-//I2S_CHANNEL_FMT_ONLY_RIGHT
+
 void i2s_install(){
   const i2s_config_t i2s_config = {
     .mode = i2s_mode_t(I2S_MODE_MASTER | I2S_MODE_RX),

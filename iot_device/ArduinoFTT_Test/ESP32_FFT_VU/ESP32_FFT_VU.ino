@@ -16,9 +16,8 @@ unsigned int sampling_period_us;
 double vReal[SAMPLES];
 double vImag[SAMPLES];
 unsigned long newTime;
-int bandValues[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 arduinoFFT FFT = arduinoFFT(vReal, vImag, SAMPLES, SAMPLING_FREQ);
-double highestBandValue = 60000;
+//double highestBandValue = 60000;
 
 void setup() {
   Serial.begin(1000000);
@@ -35,12 +34,7 @@ void loop() {
 //    Serial.println(vReal[i]);
     while ((micros() - newTime) < sampling_period_us) { /* chill */ }
   }
-//  memcpy(vRealCopy, vReal, sizeof(vReal));
   
-//  for (int i = 0; i < SAMPLES; i++) {
-//    Serial.println(vRealCopy[i]);
-//  }
- 
   // Compute FFT
   FFT.DCRemoval();
   FFT.Windowing(FFT_WIN_TYP_HAMMING, FFT_FORWARD);
@@ -48,53 +42,10 @@ void loop() {
   FFT.ComplexToMagnitude();
   FFT.MajorPeak();
 
-//  for (int i = 0; i < SAMPLES; i++) {
-//    Serial.println("[" + String(i) + "," + String(int(vReal[i])) + "],");
-////    Serial.println(int(vReal[i])); 
-//  }
-//  Serial.println("*********************"); 
-////  delay(1000);
-//  while (true){}
-
   for (int i = 0; i < SAMPLES; i++) {
     Serial.println(vReal[i]); 
   }
   Serial.println("*********************"); 
   delay(1000);
 
-
-//  Serial.println(FFT.MajorPeak());
-
-//  for (int i = 0; i<NUM_BANDS; i++){
-//    bandValues[i] = 0;
-//  }
-//
-//  for (int i = 2; i < (SAMPLES/2); i++){       // Don't use sample 0 and only first SAMPLES/2 are usable. Each array element represents a frequency bin and its value the amplitude.
-//   if (vReal[i] > NOISE) {                    // Add a crude noise filter
-//    //16 bands, 12kHz top band
-//      if (i<=8 )           bandValues[0]  += (int)vReal[i];
-//      if (i>8   && i<=15  ) bandValues[1]  += (int)vReal[i];
-//      if (i>15  && i<=29  ) bandValues[2]  += (int)vReal[i];
-//      if (i>29  && i<=56  ) bandValues[3]  += (int)vReal[i];
-//      if (i>56  && i<=107 ) bandValues[4]  += (int)vReal[i];
-//      if (i>107 && i<=204 ) bandValues[5]  += (int)vReal[i];
-//      if (i>204 && i<=390 ) bandValues[6]  += (int)vReal[i];
-//      if (i>390           ) bandValues[7]  += (int)vReal[i];
-//    }
-//  }
-//  
-//  int val = 0;
-//  for (int i = 0; i < NUM_BANDS; i++) {
-//    if (bandValues[i]>highestBandValue){highestBandValue = bandValues[i];}
-//    
-//    val = map(bandValues[i],0,highestBandValue,0,1000);
-//    Serial.println(val); 
-//  }
-  
-
-//  for (int i = 0; i < SAMPLES; i++) {
-//    Serial.println(vReal[i]); 
-//  }
-//  Serial.println("*********************"); 
-//  delay(10);
 }
