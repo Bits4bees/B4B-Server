@@ -967,7 +967,7 @@ export default {
         userId: "sampleuserid",
         selectedDevice: {
           name: "Home",
-          dId: "8888"
+          dId: "default"
         },
         variableFullName: "nombre",
         variable: "varname",
@@ -980,7 +980,14 @@ export default {
         widget: "colmenachart",
         icon: "fa-sun",
         chartTimeAgo: 60,
-        demo: true
+        demo: true,
+        values: {
+          temperaturaExt: 50,
+          temperaturaInt: 50,
+          humedadExt: 50,
+          humedadInt: 50,
+          actividad: "alta"
+        }
       },
 
 

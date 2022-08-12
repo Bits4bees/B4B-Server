@@ -9,10 +9,18 @@
     >
     <!-- slot-scope="props" -->
       <template slot="links">
-        <sidebar-item
+        <!--<sidebar-item
           :link="{
             name: 'Dashboard',
             path: '/dashboard'
+          }"
+        >
+        </sidebar-item>-->
+
+        <sidebar-item
+          :link="{
+            name: 'Colmenas',
+            path: '/colmenas'
           }"
         >
         </sidebar-item>
