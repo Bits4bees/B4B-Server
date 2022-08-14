@@ -20,7 +20,7 @@
       ></Rtnumberchart>
 
       <Rtfttchart
-        v-if="widget.widget == 'numberchart'"
+        v-if="widget.widget == 'fttchart'"
         :config="fixWidget(widget)"
       ></Rtfttchart>
 
