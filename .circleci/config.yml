@@ -17,7 +17,7 @@ jobs:
           name: Install awsebcli package
           command: |
             sudo apt-get -y -qq update
-            sudo apt-get install python-pip python-dev build-essential
+            sudo apt-get install python-pip build-essential
             sudo pip install --upgrade awsebcli
             eb --version
       - run:
