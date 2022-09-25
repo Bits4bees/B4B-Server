@@ -1,4 +1,13 @@
-machine: true
+version: 2
+general:
+  branches:
+    only:
+      - main
+      - staging
+      - dev
+jobs:
+  build:
+    machine: true
     steps:
       - checkout
       - run:
