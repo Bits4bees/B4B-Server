@@ -18,7 +18,7 @@ jobs:
           command: |
             sudo apt-get -y -qq update
             sudo apt-get install python-pip build-essential
-            sudo pip install --upgrade awsebcli
+            pip install --upgrade awsebcli
             eb --version
       - run:
           name: installing dependencies
