@@ -20,10 +20,10 @@ jobs:
             sudo apt-get install build-essential python3-pip
             sudo pip install --upgrade awsebcli
             eb --version
-      - run:
-          name: installing dependencies
-          command: |
-            npm  install 
+#      - run:
+#          name: installing dependencies
+#          command: |
+#            npm  install
       - run:
           name: deploy 
           command: |
