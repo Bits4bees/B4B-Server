@@ -16,9 +16,10 @@ jobs:
       - run:
           name: Install awsebcli package
           command: |
+            brew install pyenv
             sudo apt-get -y -qq update
             sudo apt-get install python-pip build-essential
-            pip install --upgrade awsebcli
+            sudo pip install --upgrade awsebcli
             eb --version
       - run:
           name: installing dependencies
