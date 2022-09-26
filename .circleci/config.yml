@@ -27,7 +27,7 @@ jobs:
       - run:
           name: deploy 
           command: |
-           bash ./deploy.sh
+           bash deploy.sh
       - run:
           name: Removing aws config
           command: |
