@@ -99,9 +99,9 @@ random_str=$(rand-str 20)
 printf "\n\n Selecciona el nombre para Mongo Db\n"
 while [[ -z "$MONGO_DATABASE" ]]
 do
-  read -p "   Mongo Password $(tput setaf 128)(${random_str})$(tput setaf 7): "  MONGO_DATABASE
-  MONGO_PASSWORD=${MONGO_DATABASE:-${random_str}}
-  echo "      Selected Mongo Password ► ${MONGO_DATABASE} ✅"
+  read -p "   Mongo DB Name $(tput setaf 128)(${random_str})$(tput setaf 7): "  MONGO_DATABASE
+  MONGO_DATABASE=${MONGO_DATABASE:-${random_str}}
+  echo "      Selected Mongo DB Name ► ${MONGO_DATABASE} ✅"
 done
 
 
@@ -360,8 +360,6 @@ sudo sh -c " echo 'SSLREDIRECT=${SSLREDIRECT}' >> $filename"
 
 cd ..
 
-
-
-docker-compose -f services/docker_node_install.yml up
-docker-compose -f services/docker_nuxt_build.yml up
-docker-compose -f services/docker_compose_production.yml up -d
+sudo docker-compose -f services/docker_node_install.yml up
+sudo docker-compose -f services/docker_nuxt_build.yml up
+sudo docker-compose -f services/docker_compose_production.yml up -d
