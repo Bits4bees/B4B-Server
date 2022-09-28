@@ -1,2 +1,27 @@
 #DELETE ALL VOLUME
 docker volume rm $(docker volume ls -q) -f
+
+ssh -i /mnt/c/Users/HARDWARE/Documents/Esteban/git/bit4beesadmin.pem ec2-user@3.142.80.29
+
+ssh -i C:\Users\HARDWARE\Documents\Esteban\git\bit4beesadmin.pem ec2-user@3.142.80.29
+
+Start the Docker service:
+sudo systemctl start docker.service
+
+Get the docker service status on your AMI instance, run:
+sudo systemctl status docker.service
+
+
+///////////////
+   🟢 TIMEZONE:  GMT-6
+   🟢 MONGO USER:  admin
+   🟢 MONGO PASS:  OKOPdeuV5LJx02nQtIwB
+   🟢 MONGO PORT:  27017
+   🟢 EMQX API PASSWORD:  8AZfTar8KAJC23GBPjet
+   🟢 MQTT SUPERUSER:  Bh9QHGyAvAyBTmkzOJ3w
+   🟢 MQTT SUPER PASS:  EoiIhzIfNp7YNW4eJbYy
+   🟢 WEBHOOK WEB TOKEN:  OIb6JaKMZwA8QeYeGMsZ
+   🟢 DOMAIN:  3.142.80.29
+   🟢 IP:  3.142.80.29
+   🟢 SSL?:  Sin SSL
+///////////////

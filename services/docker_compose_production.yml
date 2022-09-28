@@ -63,10 +63,10 @@ services:
       - mongo
 
     extra_hosts:
-      - "localhost:192.168.0.6"
+      - "localhost:${LOCALHOST}"
 
     environment:
-      EMQX_NAME: parso_broker
+      EMQX_NAME: bits4bees_broker
       EMQX_HOST: 127.0.0.1
 
       TZ: "${TZ}"
@@ -112,5 +112,24 @@ services:
 
       EMQX_LOADED_PLUGINS: "emqx_recon,emqx_retainer,emqx_management,emqx_dashboard,emqx_auth_mongo"
 
-      EMQX_LISTENER__TCP__EXTERNAL__MAX_CONNECTIONS: 1000
+      # listener.tcp.external.max_connections
+      EMQX_LISTENER__TCP__EXTERNAL__MAX_CONNECTIONS: 10
+      
+      # listener.tcp.internal.max_connections
+      EMQX_LISTENER__TCP__INTERNAL__MAX_CONNECTIONS: 11
+
+      # dashboard.listener.https.max_clients
+      EMQX_DASHBOARD__LISTENER__HTTP__MAX_CLIENTS: 12
+      
+      # management.listener.http.max_clients
+      EMQX_MANAGEMENT__LISTENER__HTTP__MAX_CLIENTS: 13
+      
+      # listener.ssl.external.max_connections
+      EMQX_LISTENER__SSL__EXTERNAL__MAX_CONNECTIONS: 14
+
+      # listener.ws.external.max_connections
+      EMQX_LISTENER__WS__EXTERNAL__MAX_CONNECTIONS: 15
+
+      # listener.wss.external.max_connections
+      EMQX_LISTENER__WSS__EXTERNAL__MAX_CONNECTIONS: 16
 
