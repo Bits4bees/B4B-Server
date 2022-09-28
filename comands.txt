@@ -3,7 +3,7 @@ docker volume rm $(docker volume ls -q) -f
 
 ssh -i /mnt/c/Users/HARDWARE/Documents/Esteban/git/bit4beesadmin.pem ec2-user@3.142.80.29
 
-ssh -i C:\Users\HARDWARE\Documents\Esteban\git\bit4beesadmin.pem ec2-user@3.142.80.29
+ssh -i C:\Users\HARDWARE\Documents\Esteban\git\bit4beesadmin.pem ec2-user@3.15.238.91
 
 Start the Docker service:
 sudo systemctl start docker.service
@@ -15,12 +15,12 @@ sudo systemctl status docker.service
 ///////////////
    🟢 TIMEZONE:  UTC
    🟢 MONGO USER:  admin
-   �� MONGO PASS: 7MdCTdgHzrLooMl3EfHQ
+   �� MONGO PASS: PvRMcuoB7tfCTDYcCoWB
    🟢 MONGO PORT:  27017
-   🟢 EMQX API PASSWORD:  YtTMQ6sKgnkXEcZgRk5H
-   🟢 MQTT SUPERUSER:  yHNOHmi1QGQ9rPrCyqQW
-   �� MQTT SUPER PASS: jIeI1g5iGhzJMXdcte3E
-   🟢 WEBHOOK WEB TOKEN:  KBWKciDPbNTbAzhW7Sk0
+   🟢 EMQX API PASSWORD:  PtnCOO0m2vkfz8cO2OeV
+   🟢 MQTT SUPERUSER:  R4BePdCPp8U5h2Z4qQka
+   �� MQTT SUPER PASS: gOMqoLl5jeH4bxkrQImj
+   🟢 WEBHOOK WEB TOKEN:  AbNOXJoS2qIhchYOMxVj
    🟢 DOMAIN:  3.142.80.29
    🟢 IP:  3.142.80.29
    🟢 SSL?:  Sin SSL

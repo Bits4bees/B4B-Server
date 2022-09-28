@@ -63,7 +63,7 @@ services:
       - mongo
 
     extra_hosts:
-      - "localhost:${LOCALHOST}"
+      - "localhost:${HOST}"
 
     environment:
       EMQX_NAME: bits4bees_broker

@@ -94,6 +94,17 @@ do
   echo "      Selected Mongo Port ► ${MONGO_PORT} ✅"
 done
 
+#MONGO_DATABASE
+random_str=$(rand-str 20)
+printf "\n\n Selecciona el nombre para Mongo Db\n"
+while [[ -z "$MONGO_DATABASE" ]]
+do
+  read -p "   Mongo Password $(tput setaf 128)(${random_str})$(tput setaf 7): "  MONGO_DATABASE
+  MONGO_PASSWORD=${MONGO_DATABASE:-${random_str}}
+  echo "      Selected Mongo Password ► ${MONGO_DATABASE} ✅"
+done
+
+
 ## ______________________________
 ## EMQX
 
@@ -236,11 +247,7 @@ if [[ $SSL -eq 1 ]]
 fi
 
 msg="
-   __                                      
-  /__\ ___  ___ _   _ _ __ ___   ___ _ __  
- / \/// _ \/ __| | | | '_ \` _ \ / _ \ '_ \ 
-/ _  \  __/\__ \ |_| | | | | | |  __/ | | |
-\/ \_/\___||___/\__,_|_| |_| |_|\___|_| |_|                                                                                                                           
+          RESUMEN                                                                                                                           
 "
 
 tput setaf 128;
@@ -266,9 +273,9 @@ sleep 2
 
 
 sudo yum update
-sudo yum install git python3 pip3
+sudo yum install git python3 pip3 -y
 sudo yum search docker
-sudo yum install docker
+sudo yum install docker -y
 sudo usermod -a -G docker ec2-user
 id ec2-user
 sudo systemctl enable docker.service
@@ -299,6 +306,9 @@ sudo sh -c " echo '# M O N G O' >> $filename"
 sudo sh -c " echo 'MONGO_USERNAME=${MONGO_USERNAME}' >> $filename"
 sudo sh -c " echo 'MONGO_PASSWORD=${MONGO_PASSWORD}' >> $filename"
 sudo sh -c " echo 'MONGO_EXT_PORT=${MONGO_PORT}' >> $filename"
+sudo sh -c " echo 'MONGO_EXT_PORT=${MONGO_PORT}' >> $filename"
+sudo sh -c " echo 'MONGO_DATABASE=${MONGO_DATABASE}' >> $filename"
+sudo sh -c "echo 'HOST=${IP}' >> $filename"
 sudo sh -c " echo '' >> $filename"
 sudo sh -c " echo '# E M Q X' >> $filename"
 sudo sh -c " echo 'EMQX_DEFAULT_USER_PASSWORD=${EMQX_DEFAULT_USER_PASSWORD}' >> $filename"
@@ -313,7 +323,7 @@ sudo sh -c "echo '' >> $filename"
 sudo sh -c "echo '#A P I  - N O D E ' >> $filename"
 sudo sh -c "echo 'API_PORT=3001' >> $filename"
 sudo sh -c "echo 'WEBHOOKS_HOST=node' >> $filename"
-sudo sh -c "echo 'MQTT_NOTIFICATION_HOST=${IP}' >> $filename"
+sudo sh -c "echo 'HOST=${IP}' >> $filename"
 sudo sh -c "echo '' >> $filename"
 
 # M O N G O 
@@ -331,7 +341,6 @@ sudo sh -c "echo '' >> $filename"
 sudo sh -c " echo 'EMQX_DEFAULT_APPLICATION_SECRET=${EMQX_DEFAULT_APPLICATION_SECRET}' >> $filename"
 sudo sh -c " echo 'EMQX_NODE_SUPERUSER_USER=${EMQX_NODE_SUPERUSER_USER}' >> $filename"
 sudo sh -c " echo 'EMQX_NODE_SUPERUSER_PASSWORD=${EMQX_NODE_SUPERUSER_PASSWORD}' >> $filename"
-sudo sh -c " echo 'EMQX_API_HOST=${IP}' >> $filename"
 sudo sh -c " echo 'EMQX_API_TOKEN=${EMQX_API_TOKEN}' >> $filename"
 sudo sh -c "echo 'EMQX_RESOURCES_DELAY=30000' >> $filename"
 sudo sh -c "echo '' >> $filename"
