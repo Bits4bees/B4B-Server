@@ -6,9 +6,9 @@ services:
   node_build:
     container_name: node_build
     image: "node:14"
-    working_dir: /home/node/app
+    working_dir: /home/ec2-user/app
     volumes:
-      - ./app/:/home/node/app
+      - ./app/:/home/ec2-user/app
 
 
     command: sh -c "npm run build"

@@ -13,14 +13,14 @@ sudo systemctl status docker.service
 
 
 ///////////////
-   🟢 TIMEZONE:  GMT-6
+   🟢 TIMEZONE:  UTC
    🟢 MONGO USER:  admin
-   🟢 MONGO PASS:  OKOPdeuV5LJx02nQtIwB
+   �� MONGO PASS: 7MdCTdgHzrLooMl3EfHQ
    🟢 MONGO PORT:  27017
-   🟢 EMQX API PASSWORD:  8AZfTar8KAJC23GBPjet
-   🟢 MQTT SUPERUSER:  Bh9QHGyAvAyBTmkzOJ3w
-   🟢 MQTT SUPER PASS:  EoiIhzIfNp7YNW4eJbYy
-   🟢 WEBHOOK WEB TOKEN:  OIb6JaKMZwA8QeYeGMsZ
+   🟢 EMQX API PASSWORD:  YtTMQ6sKgnkXEcZgRk5H
+   🟢 MQTT SUPERUSER:  yHNOHmi1QGQ9rPrCyqQW
+   �� MQTT SUPER PASS: jIeI1g5iGhzJMXdcte3E
+   🟢 WEBHOOK WEB TOKEN:  KBWKciDPbNTbAzhW7Sk0
    🟢 DOMAIN:  3.142.80.29
    🟢 IP:  3.142.80.29
    🟢 SSL?:  Sin SSL

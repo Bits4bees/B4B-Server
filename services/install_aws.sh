@@ -32,13 +32,6 @@ rand-str()
 
 clear
 msg="
-______  _  _           ___ ______                  
-| ___ \(_)| |         /   || ___ \                 
-| |_/ / _ | |_  ___  / /| || |_/ /  ___   ___  ___ 
-| ___ \| || __|/ __|/ /_| || ___ \ / _ \ / _ \/ __|
-| |_/ /| || |_ \__ \\___  || |_/ /|  __/|  __/\__ \
-\____/ |_| \__||___/    |_/\____/  \___| \___||___/
-
                                            Bits4Bees                                                
 "
 
@@ -360,13 +353,6 @@ cd ..
 
 
 
-sudo docker-compose -f services/docker_node_install.yml up
-sudo docker-compose -f services/docker_nuxt_build.yml up
-sudo docker-compose -f services/docker_compose_production.yml up -d
-
-
-
-
-
-
-
+docker-compose -f services/docker_node_install.yml up
+docker-compose -f services/docker_nuxt_build.yml up
+docker-compose -f services/docker_compose_production.yml up -d

@@ -13,9 +13,9 @@ services:
     container_name: node
     image: "node:14"
     restart: always
-    working_dir: /home/node/app
+    working_dir: /home/ec2-user/app
     volumes:
-      - ./app/:/home/node/app
+      - ./app/:/home/ec2-user/app
     ports:
       - "3000:3000"
       - "3001:3001"
