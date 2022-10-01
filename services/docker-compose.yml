@@ -43,10 +43,10 @@ services:
       - mongo
 
     extra_hosts:
-      - "localhost:${LOCALHOST}"
+      - "localhost:${HOST}"
 
     environment:
-      EMQX_NAME: parso_broker
+      EMQX_NAME: bits4bees_broker
       EMQX_HOST: 127.0.0.1
 
       TZ: "${TZ}"

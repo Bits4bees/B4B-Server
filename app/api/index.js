@@ -58,7 +58,7 @@ app.listen(process.env.API_PORT, () => {
 //Mongo Connection
 const mongoUserName = process.env.MONGO_USERNAME;
 const mongoPassword = process.env.MONGO_PASSWORD;
-const mongoHost = process.env.MONGO_HOST;
+const mongoHost = process.env.HOST;
 const mongoPort = process.env.MONGO_PORT;
 const mongoDatabase = process.env.MONGO_DATABASE;
 
