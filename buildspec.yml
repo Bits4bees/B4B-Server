@@ -32,11 +32,13 @@ phases:
     - echo Build completed on `date` 
     - echo pushing to repo
     # update the following line with the URI of your own ECR repository
-    - docker push $REPOSITORY_URI:latest
-    - docker push $REPOSITORY_URI:$IMAGE_TAG
+    #- docker push $REPOSITORY_URI:latest
+    #- docker push $REPOSITORY_URI:$IMAGE_TAG
+    - docker push $REPOSITORY_URI
     - echo Writing image definitions file... 
     #- printf '[{"ImageURI":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
-    - printf '{"ImageURI":"%s"}' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
+    #- printf '{"ImageURI":"%s"}' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
+    - printf '{"ImageURI":"%s"}' $REPOSITORY_URI > imageDetail.json
 artifacts:
   files:
     - imageDetail.json
