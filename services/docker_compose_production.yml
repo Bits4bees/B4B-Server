@@ -8,26 +8,6 @@ volumes:
 
 
 services:
-
-  node:
-    container_name: node
-    image: "node:14"
-    restart: always
-    working_dir: /home/ec2-user/app
-    volumes:
-      - ./app/:/home/node/app
-    ports:
-      - "3000:3000"
-      - "3001:3001"
-      - "80:3002"
-
-    links:
-      - emqx
-      - mongo
-
-    command: sh -c "echo 'delaying 30 seconds' && sleep 30 && npm run start"
-    #command: sh -c "npm install"
-
   mongo:
     container_name: mongo
     image: mongo:4.4
@@ -42,4 +22,94 @@ services:
       - ./mongodata:/data/db
     ports:
       - ${MONGO_EXT_PORT}:27017
+
+  emqx:
+    container_name: emqx
+    image: emqx/emqx:4.2.3
+    restart: always
+
+    ports:
+      - 18083:18083
+      - 1883:1883
+      - 8083:8083
+      - 8085:8081
+
+    volumes:
+      - vol-emqx-data:/opt/emqx/data
+      - vol-emqx-log:/opt/emqx/log
+
+  
+    links:
+      - mongo
+
+    extra_hosts:
+      - "localhost:${HOST}"
+
+    environment:
+      EMQX_NAME: bits4bees_broker
+      EMQX_HOST: 127.0.0.1
+
+      TZ: "${TZ}"
+
+      # DEFAULT DASH PASS
+      EMQX_DASHBOARD__DEFAULT_USER__PASSWORD: "${EMQX_DEFAULT_USER_PASSWORD}"
+
+      # DEFAULT APP SECRET
+      EMQX_MANAGEMENT__DEFAULT_APPLICATION__SECRET: "${EMQX_DEFAULT_APPLICATION_SECRET}"
+
+      EMQX_ALLOW_ANONYMOUS: "false"
+      EMQX_NOMATCH: "deny"
+
+      # MONGO CONNECTION
+      EMQX_AUTH__MONGO__TYPE: single
+      EMQX_AUTH__MONGO__TOPOLOGY__POOL_SIZE: 1
+      EMQX_AUTH__MONGO__TOPOLOGY__MAX_OVERFLOW: 0
+
+      EMQX_AUTH__MONGO__SERVER: "mongo:${MONGO_EXT_PORT}"
+      EMQX_AUTH__MONGO__POOL: 8
+
+      EMQX_AUTH__MONGO__LOGIN: "${MONGO_USERNAME}"
+      EMQX_AUTH__MONGO__PASSWORD: "${MONGO_PASSWORD}"
+      EMQX_AUTH__MONGO__AUTH_SOURCE: admin
+
+      EMQX_AUTH__MONGO__DATABASE: "${MONGO_DATABASE}"
+      EMQX_AUTH__MONGO__AUTH_QUERY__COLLECTION: "emqxauthrules"
+
+      EMQX_AUTH__MONGO__SUPER_QUERY__COLLECTION: "emqxauthrules"
+      EMQX_AUTH__MONGO__SUPER_QUERY__SUPER_FIELD: "is_superuser"
+      EMQX_AUTH__MONGO__SUPER_QUERY__SELECTOR: "username=%u"
+      EMQX_AUTH__MONGO__SUPER_QUERY: "off"
+
+      EMQX_AUTH__MONGO__AUTH_QUERY__PASSWORD_HASH: plain
+      EMQX_AUTH__MONGO__AUTH_QUERY__PASSWORD_FIELD: "password"
+      EMQX_AUTH__MONGO__AUTH_QUERY__SELECTOR: "username=%u"
+
+      ## Enable ACL query.
+      #Access control list
+      EMQX_AUTH__MONGO__ACL_QUERY: "on"
+      EMQX_AUTH__MONGO__ACL_QUERY__COLLECTION: "emqxauthrules"
+      EMQX_AUTH__MONGO__ACL_QUERY__SELECTOR: "username=%u"
+
+      EMQX_LOADED_PLUGINS: "emqx_recon,emqx_retainer,emqx_management,emqx_dashboard,emqx_auth_mongo"
+
+      # listener.tcp.external.max_connections
+      EMQX_LISTENER__TCP__EXTERNAL__MAX_CONNECTIONS: 10
+      
+      # listener.tcp.internal.max_connections
+      EMQX_LISTENER__TCP__INTERNAL__MAX_CONNECTIONS: 11
+
+      # dashboard.listener.https.max_clients
+      EMQX_DASHBOARD__LISTENER__HTTP__MAX_CLIENTS: 12
+      
+      # management.listener.http.max_clients
+      EMQX_MANAGEMENT__LISTENER__HTTP__MAX_CLIENTS: 13
+      
+      # listener.ssl.external.max_connections
+      EMQX_LISTENER__SSL__EXTERNAL__MAX_CONNECTIONS: 14
+
+      # listener.ws.external.max_connections
+      EMQX_LISTENER__WS__EXTERNAL__MAX_CONNECTIONS: 15
+
+      # listener.wss.external.max_connections
+      EMQX_LISTENER__WSS__EXTERNAL__MAX_CONNECTIONS: 16
 
