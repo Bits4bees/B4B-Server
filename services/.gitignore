@@ -2,3 +2,5 @@
 .env
 .log
 mongodata
+vol-emqx-data
+vol-emqx-log
