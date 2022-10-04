@@ -11,6 +11,24 @@ volumes:
 
 
 services:
+  node:
+    container_name: node
+    image: "nuxt_app:latest"
+    restart: always
+    working_dir: /usr/src/nuxt-app
+    volumes:
+      - ./nuxtdata/:/usr/src/nuxtdata
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+      - "80:3002"
+
+    links:
+      - emqx
+      - mongo
+
+    command: sh -c "echo 'delaying 30 seconds' && sleep 30 && npm run start"
+    #command: sh -c "npm install"
 
   mongo:
     container_name: mongo
