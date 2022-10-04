@@ -280,7 +280,11 @@ sudo usermod -a -G docker ec2-user
 id ec2-user
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
-sudo pip3 install docker-compose
+
+#sudo pip3 install docker-compose
+wget https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) 
+sudo mv docker-compose-$(uname -s)-$(uname -m) /usr/local/bin/docker-compose
+sudo chmod -v +x /usr/local/bin/docker-compose
 
 sudo git clone https://github.com/Bits4bees/B4B-Server.git
 
@@ -313,11 +317,6 @@ sudo sh -c " echo '' >> $filename"
 sudo sh -c " echo '# E M Q X' >> $filename"
 sudo sh -c " echo 'EMQX_DEFAULT_USER_PASSWORD=${EMQX_DEFAULT_USER_PASSWORD}' >> $filename"
 sudo sh -c " echo 'EMQX_DEFAULT_APPLICATION_SECRET=${EMQX_DEFAULT_APPLICATION_SECRET}' >> $filename"
-
-cd /home/ec2-user/app
-
-sudo sh -c "echo 'environment=prod' >> $filename"
-sudo sh -c "echo '' >> $filename"
 
 #A P I  - N O D E 
 sudo sh -c "echo '#A P I  - N O D E ' >> $filename"
@@ -360,5 +359,5 @@ sudo sh -c " echo 'SSLREDIRECT=${SSLREDIRECT}' >> $filename"
 
 cd ..
 
-docker build -t nuxt_app app/
+sudo docker build -t nuxt_app app/
 docker-compose -f services/docker_compose_production.yml up -d
