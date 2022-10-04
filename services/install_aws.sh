@@ -360,6 +360,5 @@ sudo sh -c " echo 'SSLREDIRECT=${SSLREDIRECT}' >> $filename"
 
 cd ..
 
-docker-compose -f services/docker_node_install.yml up
-docker-compose -f services/docker_nuxt_build.yml up
+docker build -t nuxt_app app/
 docker-compose -f services/docker_compose_production.yml up -d
