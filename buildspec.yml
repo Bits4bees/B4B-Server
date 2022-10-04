@@ -27,7 +27,7 @@ phases:
 
     #View available images
     - echo ----AVAILABLE IMAGES----
-    - aws ecr list-images --repository-name "hello-world"  --region us-east-2
+    - aws ecr list-images --repository-name "emqx"  --region us-east-2
     # update the following line with the URI of your own ECR repository (view the Push Commands in the console)
     - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
     #- docker tag $REPOSITORY_URI $REPOSITORY_URI 
