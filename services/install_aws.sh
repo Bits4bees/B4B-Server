@@ -286,6 +286,8 @@ wget https://github.com/docker/compose/releases/latest/download/docker-compose-$
 sudo mv docker-compose-$(uname -s)-$(uname -m) /usr/local/bin/docker-compose
 sudo chmod -v +x /usr/local/bin/docker-compose
 
+sudo usermod -a -G docker ec2-user 
+
 sudo git clone https://github.com/Bits4bees/B4B-Server.git
 
 sudo mv B4B-Server/services services
@@ -309,7 +311,6 @@ sudo sh -c " echo '' >> $filename"
 sudo sh -c " echo '# M O N G O' >> $filename"
 sudo sh -c " echo 'MONGO_USERNAME=${MONGO_USERNAME}' >> $filename"
 sudo sh -c " echo 'MONGO_PASSWORD=${MONGO_PASSWORD}' >> $filename"
-sudo sh -c " echo 'MONGO_EXT_PORT=${MONGO_PORT}' >> $filename"
 sudo sh -c " echo 'MONGO_EXT_PORT=${MONGO_PORT}' >> $filename"
 sudo sh -c " echo 'MONGO_DATABASE=${MONGO_DATABASE}' >> $filename"
 sudo sh -c "echo 'HOST=${IP}' >> $filename"

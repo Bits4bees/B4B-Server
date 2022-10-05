@@ -15,6 +15,25 @@ services:
     container_name: node
     image: "nuxt_app:latest"
     restart: always
+    environment:
+      - API_PORT: 3001
+      - WEBHOOKS_HOST: node
+      - HOST: ${IP}
+      - MONGO_USERNAME: ${MONGO_USERNAME}
+      - MONGO_PASSWORD: ${MONGO_PASSWORD}
+      - MONGO_HOST: ${MONGO_HOST}
+      - MONGO_PORT: ${MONGO_PORT}
+      - MONGO_DATABASE: ${MONGO_DATABASE}
+      - EMQX_NODE_SUPERUSER_USER: ${EMQX_NODE_SUPERUSER_USER}
+      - EMQX_NODE_SUPERUSER_PASSWORD: ${EMQX_NODE_SUPERUSER_PASSWORD}
+      - EMQX_API_TOKEN: ${EMQX_API_TOKEN}
+      - EMQX_RESOURCES_DELAY: 30000
+      - APP_PORT: 3000
+      - AXIOS_BASE_URL: ${SSL}${DOMAIN}:3001/api
+      - MQTT_PORT: ${MQTT_PORT}
+      - MQTT_HOST: ${DOMAIN}
+      - MQTT_PREFIX: ${WSPREFIX}
+      - SSLREDIRECT: ${SSLREDIRECT}
     working_dir: /usr/src/nuxt-app
     volumes:
       - ./nuxtdata/:/usr/src/nuxtdata
