@@ -29,7 +29,7 @@ phases:
     - echo ----AVAILABLE IMAGES----
     - aws ecr list-images --repository-name "dashboard"  --region us-east-2
     # update the following line with the URI of your own ECR repository (view the Push Commands in the console)
-    - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG ./app/dockerfile
+    - docker build . -t $IMAGE_REPO_NAME:latest -f ./app/dockerfile
     #- docker tag emqx $REPOSITORY_URI/eqmx:latest
     #- docker tag mongo $REPOSITORY_URI/mongo:latest
     #- docker tag $REPOSITORY_URI $REPOSITORY_URI 
