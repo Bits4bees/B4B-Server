@@ -6,7 +6,7 @@ WORKDIR /usr/src/nuxt-app
 # RUN apt-get update -y && apt-get upgrate -y
 # RUN apt-get add git
 
-COPY . /usr/src/nuxt-app/
+COPY ./app /usr/src/nuxt-app/
 RUN ls
 RUN npm install
 
