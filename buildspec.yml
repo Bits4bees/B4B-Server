@@ -49,4 +49,5 @@ phases:
     #- printf '{"ImageURI":"%s"}' $REPOSITORY_URI > imageDetail.json
 artifacts:
   files:
-    - imageDetail.json
+    - '**/*'
+  base-directory: 'dist'
