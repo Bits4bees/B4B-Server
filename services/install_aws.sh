@@ -170,6 +170,17 @@ do
   echo "      Selected EMQX API WEB TOKEN  ► ${EMQX_API_TOKEN} ✅"
 done
 
+#AUTH_TOKEN_PASSWORD
+random_str=$(rand-str 20)
+printf "\n\n🔐 Necesitamos crear el token que creará las llaves unicas para verificacion de usuarios \n"
+
+while [[ -z "$AUTH_TOKEN_PASSWORD" ]]
+do
+  read -p "   AUTHENTICATION TOKEN PASSWORD $(tput setaf 128) (${random_str})$(tput setaf 7): "  AUTH_TOKEN_PASSWORD
+  AUTH_TOKEN_PASSWORD=${AUTH_TOKEN_PASSWORD:-${random_str}}
+  echo "      Selected EMQX API WEB TOKEN  ► ${AUTH_TOKEN_PASSWORD} ✅"
+done
+
 
 
 
@@ -263,6 +274,7 @@ printf "   🟢 EMQX API PASSWORD: $(tput setaf 128)${EMQX_DEFAULT_APPLICATION_S
 printf "   🟢 MQTT SUPERUSER: $(tput setaf 128)${EMQX_NODE_SUPERUSER_USER}$(tput setaf 7)\n"
 printf "   🟢 MQTT SUPER PASS: $(tput setaf 128)${EMQX_NODE_SUPERUSER_PASSWORD}$(tput setaf 7)\n"
 printf "   🟢 WEBHOOK WEB TOKEN: $(tput setaf 128)${EMQX_API_TOKEN}$(tput setaf 7)\n"
+printf "   🟢 AUTHENTICATION TOKEN PASSWORD: $(tput setaf 128)${AUTH_TOKEN_PASSWORD}$(tput setaf 7)\n"
 printf "   🟢 DOMAIN: $(tput setaf 128)${DOMAIN}$(tput setaf 7)\n"
 printf "   🟢 IP: $(tput setaf 128)${IP}$(tput setaf 7)\n"
 printf "   🟢 SSL?: $(tput setaf 128)${opt}$(tput setaf 7)\n"
@@ -276,7 +288,7 @@ sudo yum update
 sudo yum install git python3 pip3 -y
 sudo yum search docker
 sudo yum install docker -y
-sudo usermod -a -G docker ec2-user
+# sudo usermod -a -G docker ec2-user
 id ec2-user
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
@@ -284,9 +296,9 @@ sudo systemctl start docker.service
 #sudo pip3 install docker-compose
 wget https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) 
 sudo mv docker-compose-$(uname -s)-$(uname -m) /usr/local/bin/docker-compose
-sudo chmod -v +x /usr/local/bin/docker-compose
+sudo chmod -v +x /usr/local/bin/docker-compose 
 
-sudo usermod -a -G docker ec2-user 
+sudo usermod -a -G docker ec2-user
 
 sudo git clone https://github.com/Bits4bees/B4B-Server.git
 
@@ -344,6 +356,12 @@ sudo sh -c " echo 'EMQX_NODE_SUPERUSER_PASSWORD=${EMQX_NODE_SUPERUSER_PASSWORD}'
 sudo sh -c " echo 'EMQX_API_TOKEN=${EMQX_API_TOKEN}' >> $filename"
 sudo sh -c "echo 'EMQX_RESOURCES_DELAY=30000' >> $filename"
 sudo sh -c "echo '' >> $filename"
+
+# B A C K
+sudo sh -c "echo '# B A C K' >> $filename"
+sudo sh -c " echo 'AUTH_TOKEN_PASSWORD=${AUTH_TOKEN_PASSWORD}' >> $filename"
+sudo sh -c "echo '' >> $filename"
+
 
 # F R O N T
 sudo sh -c "echo '# F R O N T' >> $filename"
