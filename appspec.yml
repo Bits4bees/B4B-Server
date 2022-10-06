@@ -1,0 +1,19 @@
+version: 0.0
+os: linux
+files:
+  - source: ./
+    destination: /home/ec2-user
+#Se pueden copiar varios archivos
+#  - source: source
+#    destination: /webapps/myApp
+hooks:
+  #AfterInstall:
+  #  - location: Scripts/RunResourceTests.sh
+  #    timeout: 180
+  ApplicationStart:
+    - location: ./aws-deploy.sh
+      timeout: 3600
+  ValidateService:
+    - location: Scripts/MonitorService.sh
+      timeout: 3600
+      runas: codedeployuser
