@@ -375,6 +375,7 @@ sudo sh -c "echo 'MQTT_PREFIX=${WSPREFIX}' >> $filename"
 
 sudo sh -c " echo 'SSLREDIRECT=${SSLREDIRECT}' >> $filename"
 
+cp /home/ec2-user/services/.env /home/ec2-user/app/.env
 
 cd ..
 
