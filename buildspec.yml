@@ -29,11 +29,16 @@ phases:
     - echo ----AVAILABLE IMAGES----
     - aws ecr list-images --repository-name "dashboard"  --region us-east-2
     # update the following line with the URI of your own ECR repository (view the Push Commands in the console)
-    - docker build . -t dashboard:latest -f ./app/dockerfile
+    
+    #ESTE ES EL BUENO
+    #- docker build . -t dashboard:latest -f ./app/dockerfile
+
     #- docker tag emqx $REPOSITORY_URI/eqmx:latest
     #- docker tag mongo $REPOSITORY_URI/mongo:latest
     #- docker tag $REPOSITORY_URI $REPOSITORY_URI 
-    - docker tag dashboard:latest $REPOSITORY_URI:latest
+
+    #ESTE ES EL BUENO
+    #- docker tag dashboard:latest $REPOSITORY_URI:latest
   post_build: 
     commands: 
     - echo Build completed on `date` 
@@ -42,11 +47,12 @@ phases:
     #- docker push $REPOSITORY_URI:latest
     #- docker push $REPOSITORY_URI:$IMAGE_TAG
     #- docker push $REPOSITORY_URI
-    - docker push $REPOSITORY_URI:latest
-    - echo Writing image definitions file... 
-    #- printf '[{"ImageURI":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
-    - printf '{"ImageURI":"%s"}' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
-    #- printf '{"ImageURI":"%s"}' $REPOSITORY_URI > imageDetail.json
+
+    # SIRVE!
+    #- docker push $REPOSITORY_URI:latest
+    #- echo Writing image definitions file... 
+
+    #- printf '{"ImageURI":"%s"}' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
 artifacts:
   files:
     - '**/*'

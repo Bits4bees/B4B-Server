@@ -14,7 +14,6 @@ hooks:
   ApplicationStart:
     - location: ./aws-deploy.sh
       timeout: 3600
-      runas: ec2-user
   ValidateService:
     - location: Scripts/MonitorService.sh
       timeout: 3600
