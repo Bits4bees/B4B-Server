@@ -38,7 +38,7 @@ services:
       SSLREDIRECT: ${SSLREDIRECT}
     working_dir: /usr/src/nuxt-app
     volumes:
-      - ./nuxtdata/:/usr/src/nuxtdata
+      - ~/data/nuxtdata/:/usr/src/nuxtdata
     ports:
       - "3000:3000"
       - "3001:3001"
@@ -60,7 +60,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: "${MONGO_USERNAME}"
       MONGO_INITDB_ROOT_PASSWORD: "${MONGO_PASSWORD}"
     volumes:
-      - ./mongodata:/data/db
+      - ~/data/mongodata:/data/db
     ports:
       - ${MONGO_EXT_PORT}:27017
 
@@ -76,8 +76,8 @@ services:
       - 8085:8081
 
     volumes:
-      - ./vol-emqx-data:/opt/emqx/data
-      - ./vol-emqx-log:/opt/emqx/log
+      - ~/data/vol-emqx-data:/opt/emqx/data
+      - ~/data/vol-emqx-log:/opt/emqx/log
 
     links:
       - mongo
