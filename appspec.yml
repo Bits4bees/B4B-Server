@@ -14,7 +14,7 @@ hooks:
   ApplicationStart:
     - location: ./aws-deploy.sh
       timeout: 3600
-  ValidateService:
-    - location: Scripts/MonitorService.sh
-      timeout: 3600
-      runas: codedeployuser
+  #ValidateService:
+  #  - location: Scripts/MonitorService.sh
+  #    timeout: 3600
+  #    runas: codedeployuser

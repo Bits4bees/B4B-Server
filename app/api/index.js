@@ -30,6 +30,11 @@ app.use("/api", require("./routes/webhooks.js"));
 app.use("/api", require("./routes/emqxapi.js"));
 app.use("/api", require("./routes/alarms.js"));
 app.use("/api", require("./routes/dataprovider.js"));
+
+// Revisar status del api
+app.get('/api/status', (req, res) => {
+  res.send('API ejecutando correctamente')
+})
  
 module.exports = app;
 
