@@ -300,6 +300,8 @@ sudo chmod -v +x /usr/local/bin/docker-compose
 
 sudo usermod -a -G docker ec2-user
 
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
 sudo git clone https://github.com/Bits4bees/B4B-Server.git
 
 sudo mv B4B-Server/services services
