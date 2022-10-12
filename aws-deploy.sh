@@ -29,6 +29,4 @@ echo "------------ Contenido -------------"
 ls
 echo "------------ Contenido -------------"
 
-
-
-docker-compose -f ~/services/docker_compose_production.yml up -d
+docker-compose -f ./services/docker_compose_production.yml up -d
