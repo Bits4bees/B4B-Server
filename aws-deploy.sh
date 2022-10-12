@@ -7,7 +7,8 @@ sudo usermod -aG docker $USER
 
 echo "########## Cambiando a carpeta donde se copia el repositorio ##########"
 
-cd /home/ec2-user
+cp /home/ec2-user/.env /home/ec2-user/bits4bees
+cd /home/ec2-user/bits4bees
 
 echo "------------ Carpeta actual -------------"
 pwd
