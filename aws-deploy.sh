@@ -9,6 +9,10 @@ echo "------------ USUARIO -------------"
 echo "$USER"
 echo "------------ USUARIO -------------"
 
+echo "------------ Carpeta actual -------------"
+pwd
+echo "------------ Carpeta actual -------------"
+
 echo "------------ Contenido -------------"
 ls
 echo "------------ Contenido -------------"
