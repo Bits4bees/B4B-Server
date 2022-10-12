@@ -17,4 +17,18 @@ echo "------------ Contenido -------------"
 ls
 echo "------------ Contenido -------------"
 
+echo "########## Cambiando carpeta ##########"
+
+cd /home/ec2-user
+
+echo "------------ Carpeta actual -------------"
+pwd
+echo "------------ Carpeta actual -------------"
+
+echo "------------ Contenido -------------"
+ls
+echo "------------ Contenido -------------"
+
+
+
 docker-compose -f ~/services/docker_compose_production.yml up -d
