@@ -5,19 +5,7 @@ sudo yum update -y
 sudo usermod -a -G docker ec2-user
 sudo usermod -aG docker $USER
 
-echo "------------ USUARIO -------------"
-echo "$USER"
-echo "------------ USUARIO -------------"
-
-echo "------------ Carpeta actual -------------"
-pwd
-echo "------------ Carpeta actual -------------"
-
-echo "------------ Contenido -------------"
-ls
-echo "------------ Contenido -------------"
-
-echo "########## Cambiando carpeta ##########"
+echo "########## Cambiando a carpeta donde se copia el repositorio ##########"
 
 cd /home/ec2-user
 
