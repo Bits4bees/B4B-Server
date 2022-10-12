@@ -24,4 +24,3 @@ sudo systemctl status docker.service
    🟢 DOMAIN:  18.219.163.5
    🟢 IP:  18.219.163.5
    🟢 SSL?:  Sin SSL
-///////////////
