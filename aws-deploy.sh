@@ -7,5 +7,10 @@ sudo usermod -aG docker $USER
 
 echo "------------ USUARIO -------------"
 echo "$USER"
+echo "------------ USUARIO -------------"
+
+echo "------------ Contenido -------------"
+ls
+echo "------------ Contenido -------------"
 
 docker-compose -f ~/services/docker_compose_production.yml up -d
