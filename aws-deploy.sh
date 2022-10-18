@@ -36,4 +36,4 @@ echo "------------ Carpeta actual -------------"
 echo "------------ Contenido -------------"
 ls
 echo "------------ Contenido -------------"
-docker-compose -f ./services/docker_compose_production.yml up -d
+sudo docker-compose -f ./services/docker_compose_production.yml up -d
