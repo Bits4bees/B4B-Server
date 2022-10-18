@@ -27,4 +27,13 @@ echo "------------ Contenido -------------"
 
 echo "########## Ejecutando docker compose ##########"
 sudo docker build -t nuxt_app app/
-docker-compose -f /services/docker_compose_production.yml up -d
+
+
+echo "------------ Carpeta actual -------------"
+pwd
+echo "------------ Carpeta actual -------------"
+
+echo "------------ Contenido -------------"
+ls
+echo "------------ Contenido -------------"
+docker-compose -f ./services/docker_compose_production.yml up -d
