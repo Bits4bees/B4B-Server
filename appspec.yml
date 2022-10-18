@@ -11,7 +11,7 @@ hooks:
   #AfterInstall:
   #  - location: Scripts/RunResourceTests.sh
   #    timeout: 180
-  ApplicationStart:
+  AfterInstall:
     - location: ./aws-deploy.sh
       timeout: 3600
   #ValidateService:

@@ -7,11 +7,12 @@ source /home/ec2-user/.bash_profile
 #sudo usermod -aG docker $USER
 
 #echo "########## Cambiando a carpeta donde se copia el repositorio ##########"
+cd /home/ec2-user/bits4bees
 
-echo "########## Copiando .envo a services ##########"
+echo "########## Copiando .env a services ##########"
 cp /home/ec2-user/credentials/.env ./services
 
-echo "########## Copiando .envo a /app ##########"
+echo "########## Copiando .env a /app ##########"
 cp /home/ec2-user/credentials/.env ./app
 
 #cd /home/ec2-user/bits4bees
@@ -25,7 +26,7 @@ ls
 echo "------------ Contenido -------------"
 
 echo "########## Entrando a /services ##########"
-cd ./services
+cd services
 
 echo "########## Ejecutando docker compose ##########"
 
