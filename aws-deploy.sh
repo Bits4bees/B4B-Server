@@ -25,10 +25,6 @@ echo "------------ Contenido -------------"
 ls
 echo "------------ Contenido -------------"
 
-echo "########## Entrando a /services ##########"
-cd services
-
 echo "########## Ejecutando docker compose ##########"
-
 sudo docker build -t nuxt_app app/
-docker-compose -f ./services/docker_compose_production.yml up -d
+docker-compose -f /services/docker_compose_production.yml up -d
