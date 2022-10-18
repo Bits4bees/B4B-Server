@@ -16,19 +16,18 @@ cp /home/ec2-user/credentials/.env ./app
 
 #cd /home/ec2-user/bits4bees
 
+echo "------------ Carpeta actual -------------"
+pwd
+echo "------------ Carpeta actual -------------"
+
+echo "------------ Contenido -------------"
+ls
+echo "------------ Contenido -------------"
+
 echo "########## Entrando a /services ##########"
-cd /services
-
-#echo "------------ Carpeta actual -------------"
-#pwd
-#echo "------------ Carpeta actual -------------"
-
-#echo "------------ Contenido -------------"
-#ls
-#echo "------------ Contenido -------------"
+cd ./services
 
 echo "########## Ejecutando docker compose ##########"
-
 
 sudo docker build -t nuxt_app app/
 docker-compose -f ./services/docker_compose_production.yml up -d
