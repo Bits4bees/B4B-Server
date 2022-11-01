@@ -36,8 +36,8 @@ services:
       - 8085:8081
 
     volumes:
-      - ./vol-emqx-data:/opt/emqx/data
-      - ./vol-emqx-log:/opt/emqx/log
+      - ./vol-emqx-data:/emqx/data
+      - ./vol-emqx-log:/emqx/log
 
     links:
       - mongo
