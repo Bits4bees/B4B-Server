@@ -289,7 +289,7 @@ sudo yum install git python3 pip3 -y
 sudo yum search docker
 sudo yum install docker -y
 
-sudo usermod -a -G docker ec2-user
+# sudo usermod -a -G docker ec2-user
 id ec2-user
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
@@ -383,4 +383,4 @@ cp /home/ec2-user/services/.env /home/ec2-user/app/.env
 cd ..
 
 sudo docker build -t nuxt_app app/
-sudo docker-compose -f services/docker_compose_production.yml up -d
+sudo docker-compose -f services/docker-compose.yml up -d
