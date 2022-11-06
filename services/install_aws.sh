@@ -288,7 +288,8 @@ sudo yum update
 sudo yum install git python3 pip3 -y
 sudo yum search docker
 sudo yum install docker -y
-# sudo usermod -a -G docker ec2-user
+
+sudo usermod -a -G docker ec2-user
 id ec2-user
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
@@ -302,12 +303,12 @@ sudo usermod -a -G docker ec2-user
 
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
-git clone https://github.com/Bits4bees/B4B-Server.git
+sudo git clone https://github.com/Bits4bees/B4B-Server.git
 
-mv B4B-Server/services services
-mv B4B-Server/app app
+sudo mv B4B-Server/services services
+sudo mv B4B-Server/app app
 
-rm -r -d B4B-Server
+sudo rm -r -d B4B-Server
 
 cd /home/ec2-user/services
 
