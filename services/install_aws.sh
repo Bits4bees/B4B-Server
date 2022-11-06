@@ -302,12 +302,12 @@ sudo usermod -a -G docker ec2-user
 
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
-sudo git clone https://github.com/Bits4bees/B4B-Server.git
+git clone https://github.com/Bits4bees/B4B-Server.git
 
-sudo mv B4B-Server/services services
-sudo mv B4B-Server/app app
+mv B4B-Server/services services
+mv B4B-Server/app app
 
-sudo rm -r -d B4B-Server
+rm -r -d B4B-Server
 
 cd /home/ec2-user/services
 
@@ -382,4 +382,4 @@ cp /home/ec2-user/services/.env /home/ec2-user/app/.env
 cd ..
 
 sudo docker build -t nuxt_app app/
-docker-compose -f services/docker_compose_production.yml up -d
+sudo docker-compose -f services/docker_compose_production.yml up -d
