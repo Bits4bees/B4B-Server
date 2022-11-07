@@ -378,9 +378,10 @@ sudo sh -c "echo 'MQTT_PREFIX=${WSPREFIX}' >> $filename"
 
 sudo sh -c " echo 'SSLREDIRECT=${SSLREDIRECT}' >> $filename"
 
-cp /home/ec2-user/services/.env /home/ec2-user/app/.env
+sudo cp /home/ec2-user/services/.env /home/ec2-user/app/.env
 
 cd ..
 
 sudo docker build -t nuxt_app app/
-sudo docker-compose -f services/docker-compose.yml up -d
+# docker-compose -f services/docker-compose.yml up -d
+sudo docker-compose -f services/docker_compose_production.yml up -d
