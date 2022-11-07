@@ -15,11 +15,30 @@ services:
     container_name: node
     image: "nuxt_app:latest"
     restart: always
-    # environment:
-    #working_dir: /usr/src/nuxt-app
-    # working_dir: /home/node/app
-    #volumes:
-    #  - ./nuxtapp/:/usr/src/nuxt-app
+    environment:
+      API_PORT: ${API_PORT}
+      WEBHOOKS_HOST: ${WEBHOOKS_HOST}
+      HOST: ${HOST}
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      EMQX_DEFAULT_APPLICATION_SECRET: ${EMQX_DEFAULT_APPLICATION_SECRET}
+      EMQX_NODE_SUPERUSER_USER: ${EMQX_NODE_SUPERUSER_USER}
+      EMQX_NODE_SUPERUSER_PASSWORD: ${EMQX_NODE_SUPERUSER_PASSWORD}
+      EMQX_API_TOKEN: ${EMQX_API_TOKEN}
+      AUTH_TOKEN_PASSWORD: ${AUTH_TOKEN_PASSWORD}
+      EMQX_RESOURCES_DELAY: ${EMQX_RESOURCES_DELAY}
+      APP_PORT: ${APP_PORT}
+      AXIOS_BASE_URL: ${AXIOS_BASE_URL}
+      MQTT_PORT: ${MQTT_PORT}
+      MQTT_HOST: ${MQTT_HOST}
+      MQTT_PREFIX: ${MQTT_PREFIX}
+      SSLREDIRECT: ${SSLREDIRECT}
+    working_dir: /usr/src/nuxt-app
+    volumes:
+      - ./nuxtdata/:/usr/src/nuxtdata
     ports:
       - "3000:3000"
       - "3001:3001"
