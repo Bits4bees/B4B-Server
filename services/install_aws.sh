@@ -284,7 +284,7 @@ read -p "Presiona Enter para comenzar la instalación..."
 sleep 2
 
 
-sudo yum update
+sudo yum update -y
 sudo yum install git python3 pip3 -y
 sudo yum search docker
 sudo yum install docker -y

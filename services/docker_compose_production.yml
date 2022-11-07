@@ -15,9 +15,11 @@ services:
     container_name: node
     image: "nuxt_app:latest"
     restart: always
+    # environment:
     # working_dir: /usr/src/nuxt-app
+    working_dir: /home/node/app
     volumes:
-      - ./nuxtdata/:/usr/src/nuxtdata
+      - ./nuxtapp/:/home/node/app
     ports:
       - "3000:3000"
       - "3001:3001"
@@ -55,9 +57,13 @@ services:
       - 8085:8081
 
     volumes:
-      - ./vol-emqx-data:/opt/emqx/data
-      - ./vol-emqx-log:/opt/emqx/log
+      - vol-emqx-data:/opt/emqx/data
+      - vol-emqx-log:/opt/emqx/log
 
+    #command: 
+    #   sh -c "sudo chown emqx:emqx /opt/emqx/log/ /opt/emqx/data/"
+    #   sh -c "echo "Set disable_coredump false" >> /etc/sudo.conf"
+    
     links:
       - mongo
 
