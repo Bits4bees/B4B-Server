@@ -16,10 +16,10 @@ services:
     image: "nuxt_app:latest"
     restart: always
     # environment:
-    working_dir: /usr/src/nuxt-app
+    #working_dir: /usr/src/nuxt-app
     # working_dir: /home/node/app
-    volumes:
-      - ./nuxtapp/:/usr/src/nuxt-app
+    #volumes:
+    #  - ./nuxtapp/:/usr/src/nuxt-app
     ports:
       - "3000:3000"
       - "3001:3001"
