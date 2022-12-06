@@ -290,6 +290,13 @@ function startMqttClient() {
     encoding: "utf8"
   };
 
+  var url = "mqtt://" + process.env.HOST;
+  console.log("-----------> THIS IS THE MQTT SERVER URL <-------------", url);
+  console.log("-----------> THIS IS THE MQTT USER <-------------", process.env.EMQX_NODE_SUPERUSER_USER);
+
+  console.log("-----------> THIS IS THE MQTT PASSWORD <-------------", process.env.EMQX_NODE_SUPERUSER_PASSWORD);
+
+
   client = mqtt.connect("mqtt://" + process.env.HOST, options);
   // console.log(client);
 

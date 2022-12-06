@@ -38,6 +38,8 @@ async function listResources() {
 try {
     const url = "http://" + process.env.HOST +":8085/api/v4/resources/";
 
+    console.log("########## THIS IS THE MQTT URL ---------------> ", url);
+
     const res = await axios.get(url, auth);
   
     const size = res.data.data.length;
