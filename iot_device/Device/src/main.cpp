@@ -9,10 +9,10 @@
 #include <PubSubClient.h>
 
 // IoT Device
-String dId = "123456";
-String webhook_pass = "tK8qXCCzdW";
-String webhook_endpoint = "http://192.168.100.7:3001/api/getdevicecredentials";
-const char *mqtt_server = "192.168.100.7";
+String dId = "3333";
+String webhook_pass = "fNRPNa9SCA";
+String webhook_endpoint = "http://ec2-3-16-113-187.us-east-2.compute.amazonaws.com:3001/api/getdevicecredentials";
+const char *mqtt_server = "ec2-3-16-113-187.us-east-2.compute.amazonaws.com";
 
 //PINS
 #define led LED_BUILTIN
@@ -21,8 +21,8 @@ const char *mqtt_server = "192.168.100.7";
 #define DHTPENABLE 12     // Digital pin connected to the DHT GND sensor
 
 // WiFi
-const char *wifi_ssid = "Jasson";
-const char *wifi_password = "telerin1234";
+const char *wifi_ssid = "Parso123";
+const char *wifi_password = "Parso123";
 
 //Functions definitions
 bool get_mqtt_credentials();
@@ -121,7 +121,7 @@ void process_sensors()
   long now = millis();
 
 // ##########TEMPERATURA INTERNA##################v
-  if (now - varsLastRead[0] >= 5 * 1000) //Read the sensor each 5 seconds
+  if (now - varsLastRead[0] >= 10 * 1000) //Read the sensor each 5 seconds
   {
 
     varsLastRead[0] = millis();
@@ -134,21 +134,23 @@ void process_sensors()
       mqtt_data_doc["variables"][0]["last"]["save"] = 0;
     }
     else{
+      //always save?
+      mqtt_data_doc["variables"][0]["last"]["save"] = 1;
       //save temp?
-      float dif = temp_in - prev_temp_in;
-      if (dif < 0)
-      {
-        dif *= -1;
-      }
+      // float dif = temp_in - prev_temp_in;
+      // if (dif < 0)
+      // {
+      //   dif *= -1;
+      // }
 
-      if (dif >= 0.01)
-      {
-        mqtt_data_doc["variables"][0]["last"]["save"] = 1;
-      }
-      else
-      {
-        mqtt_data_doc["variables"][0]["last"]["save"] = 0;
-      }
+      // if (dif >= 0.01)
+      // {
+      //   mqtt_data_doc["variables"][0]["last"]["save"] = 1;
+      // }
+      // else
+      // {
+      //   mqtt_data_doc["variables"][0]["last"]["save"] = 0;
+      // }
     
       mqtt_data_doc["variables"][0]["last"]["value"] = temp_in;
       prev_temp_in = temp_in;
@@ -156,7 +158,7 @@ void process_sensors()
   }
 
 // ##########HUMEDAD INTERNA##################
-  if (now - varsLastRead[1] >= 5 * 1000) //Read the sensor each 5 seconds
+  if (now - varsLastRead[1] >= 10 * 1000) //Read the sensor each 5 seconds
   {
     digitalWrite(led, HIGH);
     digitalWrite(DHTPENABLE, LOW);
@@ -171,21 +173,23 @@ void process_sensors()
       mqtt_data_doc["variables"][1]["last"]["save"] = 0;
     }
     else{
+      //always save?
+      mqtt_data_doc["variables"][1]["last"]["save"] = 1;
       //save hum?
-      float dif = hum_in - prev_hum_in;
-      if (dif < 0)
-      {
-        dif *= -1;
-      }
+      // float dif = hum_in - prev_hum_in;
+      // if (dif < 0)
+      // {
+      //   dif *= -1;
+      // }
 
-      if (dif >= 0.01)
-      {
-        mqtt_data_doc["variables"][1]["last"]["save"] = 1;
-      }
-      else
-      {
-        mqtt_data_doc["variables"][1]["last"]["save"] = 0;
-      }
+      // if (dif >= 0.01)
+      // {
+      //   mqtt_data_doc["variables"][1]["last"]["save"] = 1;
+      // }
+      // else
+      // {
+      //   mqtt_data_doc["variables"][1]["last"]["save"] = 0;
+      // }
     
       mqtt_data_doc["variables"][1]["last"]["value"] = hum_in;
       prev_hum_in = hum_in;

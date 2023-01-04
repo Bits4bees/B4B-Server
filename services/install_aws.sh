@@ -380,7 +380,7 @@ sudo sh -c " echo 'SSLREDIRECT=${SSLREDIRECT}' >> $filename"
 
 sudo cp /home/ec2-user/services/.env /home/ec2-user/app/.env
 
-cd ..
+cd ~/
 
 sudo docker build -t nuxt_app app/
 # docker-compose -f services/docker-compose.yml up -d

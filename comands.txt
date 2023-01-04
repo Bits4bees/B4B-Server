@@ -1,6 +1,8 @@
 #DELETE ALL VOLUME
 docker volume rm $(docker volume ls -q) -f
 
+sudo rm -r -d DIR
+
 ssh -i /mnt/c/Users/HARDWARE/Documents/Esteban/git/bit4beesadmin.pem ec2-user@3.142.80.29
 
 ssh -i C:\Users\HARDWARE\Documents\Esteban\git\bit4beesadmin.pem ec2-user@3.141.165.87

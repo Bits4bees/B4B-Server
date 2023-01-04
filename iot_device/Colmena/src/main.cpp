@@ -14,10 +14,17 @@
 // ***********************
 
 // IoT Device
-String dId = "2222";
-String webhook_pass = "UtvB8nGiZo";
-String webhook_endpoint = "http://192.168.100.150:3001/api/getdevicecredentials";
-const char *mqtt_server = "192.168.100.150";
+String dId = "5555";
+String webhook_pass = "UnJF9e2QyT";
+String webhook_endpoint = "http://ec2-3-16-113-187.us-east-2.compute.amazonaws.com:3001/api/getdevicecredentials";
+const char *mqtt_server = "ec2-3-16-113-187.us-east-2.compute.amazonaws.com";
+
+// WiFi
+const char *wifi_ssid = "Parso123";
+const char *wifi_password = "Parso123";
+
+// SIMULATION
+const bool simulation = true;
 
 //PINS
 #define led 10
@@ -41,10 +48,6 @@ const char *mqtt_server = "192.168.100.150";
 
 #define I2S_PORT I2S_NUM_0
 #define bufferLen 1024
-
-// WiFi
-const char *wifi_ssid = "Psarocolius";
-const char *wifi_password = "Oropendola2021";
 
 //Functions definitions
 bool get_mqtt_credentials();
@@ -89,8 +92,11 @@ B4B_HDC1080 HDC_EXT;
 TwoWire I2C_INT = TwoWire(0); //I2C1 bus
 TwoWire I2C_EXT = TwoWire(1); //I2C2 bus
 // ********************
-// float prev_temp_in  = 37;
-// float prev_hum_in   = random(40, 60);
+float prev_temp_in  = 0;
+float prev_hum_in   = 0;
+float prev_temp_ext  = 0;
+float prev_hum_ext   = 0;
+int prev_result = 0;
 
 
 // the setup function runs once when you press reset or power the board
@@ -179,76 +185,128 @@ void process_sensors()
   long now = millis();
 
 // ##########TEMPERATURA INTERNA##################v
-//   if (now - varsLastRead[0] >= 5 * 1000) //Read the sensor each 5 seconds
-//   {
+  if (now - varsLastRead[0] >= 10 * 1000) //Read the sensor each 5 seconds
+  {
 
-//     varsLastRead[0] = millis();
-
-//     // SIMULATOR
-//     long temp_in = prev_temp_in + random(0, 2) - random(0, 2);
-//     // READ SENSOR
-//     // float temp_in = dht.readTemperature();
-//     if (isnan(temp_in)){
-//       mqtt_data_doc["variables"][0]["last"]["save"] = 0;
-//     }
-//     else{
-//       //save temp?
-//       float dif = temp_in - prev_temp_in;
-//       if (dif < 0)
-//       {
-//         dif *= -1;
-//       }
-
-//       if (dif >= 0.01)
-//       {
-//         mqtt_data_doc["variables"][0]["last"]["save"] = 1;
-//       }
-//       else
-//       {
-//         mqtt_data_doc["variables"][0]["last"]["save"] = 0;
-//       }
+    varsLastRead[0] = millis();
+    float temp_in;
+    if (simulation){
+      // SIMULATOR
+      temp_in = prev_temp_in + random(0, 10) - random(0, 10);
+    }else{
+      // READ SENSOR
+      temp_in = HDC_INT.readTemperature();
+    }
     
-//       mqtt_data_doc["variables"][0]["last"]["value"] = temp_in;
-//       prev_temp_in = temp_in;
-//     }
-//   }
+    if (isnan(temp_in)){
+      mqtt_data_doc["variables"][0]["last"]["save"] = 0;
+    }
+    else{
+      //always save?
+      mqtt_data_doc["variables"][0]["last"]["save"] = 1;
+      mqtt_data_doc["variables"][0]["last"]["value"] = temp_in;
+      prev_temp_in = temp_in;
+    }
+  }
 
 // // ##########HUMEDAD INTERNA##################
-//   if (now - varsLastRead[1] >= 5 * 1000) //Read the sensor each 5 seconds
-//   {
-//     digitalWrite(led, HIGH);
-//     digitalWrite(DHTPENABLE, LOW);
-//     delay(100);
+  if (now - varsLastRead[1] >= 10 * 1000) //Read the sensor each 5 seconds
+  {
+    varsLastRead[1] = millis();
+    float hum_in;
+    if (simulation){
+      // SIMULATOR
+      hum_in = prev_hum_in  + random(0, 10) - random(0, 10);
+    }else{
+      // READ SENSOR
+      hum_in = HDC_INT.readHumidity();
+    }
 
-//     varsLastRead[1] = millis();
-
-//     float hum_in = prev_hum_in +  + random(0, 2) - random(0, 2);
-//     // float hum_in = dht.readHumidity();
-
-//     if (isnan(hum_in)){
-//       mqtt_data_doc["variables"][1]["last"]["save"] = 0;
+    if (isnan(hum_in)){
+      mqtt_data_doc["variables"][1]["last"]["save"] = 0;
+    }
+    else{
+      //always save?
+      mqtt_data_doc["variables"][1]["last"]["save"] = 1; 
+      mqtt_data_doc["variables"][1]["last"]["value"] = hum_in;
+      prev_hum_in = hum_in;
 //     }
-//     else{
-//       //save hum?
-//       float dif = hum_in - prev_hum_in;
-//       if (dif < 0)
-//       {
-//         dif *= -1;
-//       }
+    }
+  }
+// ##########TEMPERATURA EXTERNA##################v
+if (now - varsLastRead[2] >= 10 * 1000) //Read the sensor each 5 seconds
+  {
+    varsLastRead[2] = millis();
+    float temp_ext;
+    if (simulation){
+      // SIMULATOR
+      temp_ext = prev_temp_ext + random(0, 10) - random(0, 10);
+    }else{
+      // READ SENSOR
+      temp_ext = HDC_INT.readTemperature();
+    }
+    if (isnan(temp_ext)){
+      mqtt_data_doc["variables"][2]["last"]["save"] = 0;
+    }
+    else{
+      //always save?
+      mqtt_data_doc["variables"][2]["last"]["save"] = 1;   
+      mqtt_data_doc["variables"][2]["last"]["value"] = temp_ext;
+      prev_temp_ext = temp_ext;
+    }
+  }
 
-//       if (dif >= 0.01)
-//       {
-//         mqtt_data_doc["variables"][1]["last"]["save"] = 1;
-//       }
-//       else
-//       {
-//         mqtt_data_doc["variables"][1]["last"]["save"] = 0;
-//       }
+// // ##########HUMEDAD EXTERNA##################
+  if (now - varsLastRead[3] >= 10 * 1000) //Read the sensor each 5 seconds
+  {
+    varsLastRead[3] = millis();
+    float hum_ext;
+    if (simulation){
+      // SIMULATOR
+      hum_ext = prev_hum_ext + random(0, 10) - random(0, 10);
+    }else{
+      // READ SENSOR
+      hum_ext = HDC_INT.readHumidity();
+    }
+    if (isnan(hum_ext)){
+      mqtt_data_doc["variables"][3]["last"]["save"] = 0;
+    }
+    else{
+      //always save?
+      mqtt_data_doc["variables"][3]["last"]["save"] = 1;  
+      mqtt_data_doc["variables"][3]["last"]["value"] = hum_ext;
+      prev_hum_ext = hum_ext;
+//     }
+    }
+  }
+
+  // // ##########INTENSIDAD DE SONIDO##################
+  if (now - varsLastRead[4] >= 10 * 1000) //Read the sensor each 5 seconds
+  {
+    varsLastRead[4] = millis();
     
-//       mqtt_data_doc["variables"][1]["last"]["value"] = hum_in;
-//       prev_hum_in = hum_in;
+    esp_err_t result;
+    if (simulation){
+      // SIMULATOR
+      sBuffer[10] = prev_result + random(0, 100) - random(0, 100);
+    }else{
+      // READ SENSOR
+      size_t bytesIn = 0;
+      esp_err_t result = i2s_read(I2S_PORT, &sBuffer, bufferLen, &bytesIn, portMAX_DELAY);
+    }
+
+    if (isnan(result)){
+      mqtt_data_doc["variables"][4]["last"]["save"] = 0;
+    }
+    else{
+      //always save?
+      mqtt_data_doc["variables"][4]["last"]["save"] = 1;  
+      mqtt_data_doc["variables"][4]["last"]["value"] = sBuffer[10];
+      prev_result = sBuffer[10];
 //     }
-//   }
+    }
+  }
+
 }
 
 
@@ -271,7 +329,8 @@ void process_sensors()
 
 
 // TEMPLATE
-void process_incoming_msg(String topic, String incoming){
+void process_incoming_msg(String topic, String incoming)
+{
 
   last_received_topic = topic;
   last_received_msg = incoming;
